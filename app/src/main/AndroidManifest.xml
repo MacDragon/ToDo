@@ -19,6 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ToDoListActivity">
+        </activity>
+        <activity android:name=".ToDoItemEditorActivity">
+        </activity>
+        <activity android:name=".ViewToDoItemActivity">
+        </activity>
+        <activity android:name=".SettingsActivity">
+        </activity>
+        <activity android:name=".HelpScreenActivity">
+        </activity>
     </application>
 
 </manifest>
