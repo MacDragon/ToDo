@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.Switch;
@@ -24,7 +25,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         ((NumberPicker)findViewById(R.id.indexPicker)).setMinValue(1);
         ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(12);
         ((NumberPicker)findViewById(R.id.indexPicker)).setValue(3);
-        getActionBar().setTitle(dummy.getTitle());
+
 
     }
 
@@ -39,6 +40,8 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
 
                 }
             });
+            titleMissing.show();
+            Log.d("ToDo", "Failed");
         } else {
             Switch highlight = (Switch) findViewById(R.id.highlight);
             Switch done = (Switch) findViewById(R.id.done);
@@ -50,6 +53,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             dummy.setDescription(((TextView) findViewById(R.id.editDesc)).getText().toString());
             dummy.setDone(isDone);
             dummy.setHighlight(isHighlighted);
+            Log.d("ToDo", dummy.toString());
         }
     }
 
@@ -63,5 +67,6 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
 
             }
         });
+        confirmDelete.setNegativeButton("Cancel", null).show();
     }
 }

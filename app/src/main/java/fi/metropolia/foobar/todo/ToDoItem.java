@@ -63,4 +63,9 @@ public class ToDoItem {
     public void setHighlight(boolean highlight) {
         this.highlight = highlight;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
