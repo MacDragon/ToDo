@@ -47,4 +47,20 @@ public class ToDoItem {
     public boolean isHighlight() {
         return highlight;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public void setHighlight(boolean highlight) {
+        this.highlight = highlight;
+    }
 }
