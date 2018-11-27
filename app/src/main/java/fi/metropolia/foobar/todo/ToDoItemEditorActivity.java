@@ -1,8 +1,11 @@
 package fi.metropolia.foobar.todo;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -18,19 +21,47 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.editDesc)).setText(dummy.getDescription());
         ((Switch)findViewById(R.id.highlight)).setChecked(dummy.isHighlight());
         ((Switch)findViewById(R.id.done)).setChecked(dummy.isDone());
+        ((NumberPicker)findViewById(R.id.indexPicker)).setMinValue(1);
+        ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(12);
+        ((NumberPicker)findViewById(R.id.indexPicker)).setValue(3);
+        getActionBar().setTitle(dummy.getTitle());
+
     }
 
     public void onAddClick(View v) {
-        Switch highlight = (Switch) findViewById(R.id.highlight);
-        Switch done = (Switch) findViewById(R.id.done);
+        if (((TextView)findViewById(R.id.editTitle)).getText().toString().isEmpty()) {
+            AlertDialog.Builder titleMissing = new AlertDialog.Builder(this);
+            titleMissing.setTitle("Title missing");
+            titleMissing.setMessage("ToDo item must have a title to be valid.");
+            titleMissing.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-        Boolean isHighlighted = highlight.isChecked();
-        Boolean isDone = done.isChecked();
+                }
+            });
+        } else {
+            Switch highlight = (Switch) findViewById(R.id.highlight);
+            Switch done = (Switch) findViewById(R.id.done);
 
-        dummy.setTitle(((TextView)findViewById(R.id.editTitle)).getText().toString());
-        dummy.setDescription(((TextView)findViewById(R.id.editDesc)).getText().toString());
-        dummy.setDone(isDone);
-        dummy.setHighlight(isHighlighted);
+            Boolean isHighlighted = highlight.isChecked();
+            Boolean isDone = done.isChecked();
 
+            dummy.setTitle(((TextView) findViewById(R.id.editTitle)).getText().toString());
+            dummy.setDescription(((TextView) findViewById(R.id.editDesc)).getText().toString());
+            dummy.setDone(isDone);
+            dummy.setHighlight(isHighlighted);
+        }
+    }
+
+    public void deleteItem(View v) {
+        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
+        confirmDelete.setTitle("Delete item");
+        confirmDelete.setMessage("Are you sure you want to delete this item?");
+        confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
     }
 }
