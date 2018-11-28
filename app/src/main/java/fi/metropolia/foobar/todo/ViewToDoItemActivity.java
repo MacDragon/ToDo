@@ -4,26 +4,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 
 public class ViewToDoItemActivity extends AppCompatActivity {
-    ToDoItem dummy = new ToDoItem("Dummy Test Item", "Testing\nmultiple\nlines", true);
-
+    ToDoItem item;
+    ToDoItemList list;
+    int i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_to_do_item);
-        getSupportActionBar().setTitle(dummy.getTitle());
-        ((TextView)findViewById(R.id.showDesc)).setText(dummy.getDescription());
-        ((Switch)findViewById(R.id.showHighlight)).setChecked(dummy.isHighlight());
-        ((Switch)findViewById(R.id.showDone)).setChecked(dummy.isDone());
+        Bundle extras = getIntent().getExtras();
+        String listName = extras.getString("ToDoListName");
+        i = extras.getInt("ToDoItemIndex");
+        list = SelectionList.getInstance().getToDoList(listName);
+        item = list.getToDoItem(i);
+
+        getSupportActionBar().setTitle(item.getTitle());
+        ((TextView)findViewById(R.id.showDesc)).setText(item.getDescription());
+        ((Switch)findViewById(R.id.showHighlight)).setChecked(item.isHighlight());
+        ((Switch)findViewById(R.id.showDone)).setChecked(item.isDone());
     }
 
     @Override
     public void finish() {
         super.finish();
-        dummy.setHighlight(((Switch)findViewById(R.id.showHighlight)).isChecked());
-        dummy.setDone(((Switch)findViewById(R.id.showDone)).isChecked());
+        item.setHighlight(((Switch)findViewById(R.id.showHighlight)).isChecked());
+        item.setDone(((Switch)findViewById(R.id.showDone)).isChecked());
     }
 }

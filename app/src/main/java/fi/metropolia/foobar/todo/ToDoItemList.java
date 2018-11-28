@@ -25,7 +25,7 @@ public class ToDoItemList {
      * @return
      */
 
-    public ArrayList<ToDoItem> getToDoList() {
+    public ArrayList<ToDoItem> getToDoListArray() {
         return toDoList;
     }
 
