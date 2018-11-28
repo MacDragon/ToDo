@@ -18,6 +18,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_item_editor);
+        getSupportActionBar().setTitle(dummy.getTitle());
         ((TextView)findViewById(R.id.editTitle)).setText(dummy.getTitle());
         ((TextView)findViewById(R.id.editDesc)).setText(dummy.getDescription());
         ((Switch)findViewById(R.id.highlight)).setChecked(dummy.isHighlight());
@@ -27,17 +28,17 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         ((NumberPicker)findViewById(R.id.indexPicker)).setValue(3);
 
 
+
     }
 
     public void onAddClick(View v) {
         if (((TextView)findViewById(R.id.editTitle)).getText().toString().isEmpty()) {
             AlertDialog.Builder titleMissing = new AlertDialog.Builder(this);
-            titleMissing.setTitle("Title missing");
+            titleMissing.setTitle("Title missing!");
             titleMissing.setMessage("ToDo item must have a title to be valid.");
             titleMissing.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                 }
             });
             titleMissing.show();
@@ -54,6 +55,8 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             dummy.setDone(isDone);
             dummy.setHighlight(isHighlighted);
             Log.d("ToDo", dummy.toString());
+
+            finish();
         }
     }
 
@@ -64,7 +67,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                finish();
             }
         });
         confirmDelete.setNegativeButton("Cancel", null).show();
