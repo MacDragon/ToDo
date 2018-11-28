@@ -21,6 +21,8 @@ package fi.metropolia.foobar.todo;
 */
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,16 +35,31 @@ import java.util.ArrayList;
 
 public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
 
-    private ArrayList<ToDoItem> toDoList;
+    ToDoItemList toDoList;
+
+    private int textColor;
+
+    private void setTextFormattingByChecked(ViewHolder holder){
+        if ( holder.checkBox.isChecked() ) {
+            holder.textView.setPaintFlags(holder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textView.setTextColor(Color.LTGRAY);
+        } else {
+
+            holder.textView.setPaintFlags(holder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+
+            holder.textView.setTextColor(textColor);
+        }
+
+    };
 
     @Override
     public int getCount() {
-        return toDoList.size();
+        return toDoList.getToDoList().size();
     }
 
     @Override
     public ToDoItem getItem(int position) {
-        return toDoList.get(position);
+        return toDoList.getToDoItem(position);
     }
 
     @Override
@@ -57,7 +74,7 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
 
         final ViewHolder holder;
 
-    //    if (convertView == null) {
+        if (convertView == null) {
 
             // Inflate layout
             convertView = LayoutInflater.from(parent.getContext())
@@ -69,13 +86,14 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
             holder.textView = (TextView) convertView.findViewById(R.id.text);
 
             // Store ViewHolder with this row view
+            textColor = holder.textView.getCurrentTextColor();
+
             convertView.setTag(holder);
 
-     /*   } else {
-
-            // Use viewHolder - quicker than calling findViewById() on resource every time
+        } else {
+            // Use cached viewHolder
             holder = (ViewHolder) convertView.getTag();
-        } */
+        }
 
         // Get item from  data set at the current list position
         final ToDoItem checkItem = getItem(position);
@@ -89,15 +107,31 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
             holder.textView.setText(checkItem.getTitle());
         }
 
+        setTextFormattingByChecked(holder);
+
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(MainActivity.getTAG(), String.format("checkbox onClick, isSelected: %s ", holder.checkBox.isChecked()));
+                toDoList.getToDoItem(index).setDone(holder.checkBox.isChecked());
+
+                checkItem.setDone(holder.checkBox.isChecked());
+
+                setTextFormattingByChecked(holder);
+
+            }
+        });
+
         return convertView;
     }
 
-    public ToDoListRowAdapter(Context context, int resource  , ArrayList<ToDoItem> toDoList) {
+
+    public ToDoListRowAdapter(Context context, int resource  , ToDoItemList toDoList) {
             super(context, resource);
             this.toDoList = toDoList;
     }
 
-    // ViewHolder acts as a cache for row views
+    // ViewHolder acts as a cache for row views to use for setTag.
     private class ViewHolder {
         TextView textView;
         CheckBox checkBox;

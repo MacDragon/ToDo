@@ -22,6 +22,13 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
     }
 
+    public String getListName() {
+        return listName;
+    }
+
+    public ToDoItem getToDoItem(int index){
+        return toDoList.get(index);
+    }
 
     public boolean saveList(){
         // commit list to storage
