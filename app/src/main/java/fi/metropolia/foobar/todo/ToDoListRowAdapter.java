@@ -17,7 +17,6 @@ package fi.metropolia.foobar.todo;
 
         }
 
-
 */
 
 import android.content.Context;
@@ -54,7 +53,7 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
 
     @Override
     public int getCount() {
-        return toDoList.getToDoList().size();
+        return toDoList.getToDoListArray().size();
     }
 
     @Override

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class ToDoListActivity extends AppCompatActivity {
 
-    ToDoItemList toDoItemList;
-    Parcelable state = null;
+    private ToDoItemList toDoItemList;
+    private Parcelable state = null;
 
     /**
      * Returns the listrow adapter saved earlier for data refresh
@@ -31,6 +31,18 @@ public class ToDoListActivity extends AppCompatActivity {
         return adapter;
     }
 
+
+    public void addClick(View view){
+        Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
+        nextActivity.putExtra("ToDoItemIndex", -1);
+        nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
+        final ListView listView = (ListView) findViewById(R.id.toDoListView);
+        state = listView.onSaveInstanceState();
+        // activity is expecting to be returned to, so start as such.
+        //startActivityForResult(nextActivity);
+        startActivity(nextActivity);
+    }
+
     private ToDoListRowAdapter adapter;
 
     /**
@@ -38,6 +50,7 @@ public class ToDoListActivity extends AppCompatActivity {
      *
      * @param savedInstanceState
      */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +60,7 @@ public class ToDoListActivity extends AppCompatActivity {
         //create dummy list and items
 
         Bundle extras = getIntent().getExtras();
+        // extras failing when returning from editor
         String listName = extras.getString("listName");
         Log.d(MainActivity.getTAG(), "onCreate: " + listName);
         Log.d(MainActivity.getTAG(), "onCreate list: " + SelectionList.getInstance());
@@ -54,14 +68,15 @@ public class ToDoListActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(listName);
         toDoItemList = SelectionList.getInstance().getToDoList(listName);
 
-        ToDoItem toDoEntry = new ToDoItem("Test", "Nothing", false, false );
+        ToDoItem toDoEntry = new ToDoItem("Test", "Nothing", false, false);
         toDoItemList.addItem(toDoEntry);
-        toDoItemList.addItem( new ToDoItem("Test2", "Nothing", false, false ) );
+        toDoItemList.addItem(new ToDoItem("Test2", "Nothing", false, false));
 
-        Log.d(MainActivity.getTAG(), "onCreate: "+ toDoItemList);
+        Log.d(MainActivity.getTAG(), "onCreate: " + toDoItemList);
 
         // adapter is saved so that we can tell it to update it's data later.
         adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList);
+
         final ListView listView = (ListView) findViewById(R.id.toDoListView);
 
         listView.setAdapter(adapter);
@@ -79,6 +94,8 @@ public class ToDoListActivity extends AppCompatActivity {
                 nextActivity.putExtra("ToDoItemIndex", i);
                 nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
                 state = listView.onSaveInstanceState();
+                // activity is expecting to be returned to, so start as such.
+                //startActivityForResult(nextActivity);
                 startActivity(nextActivity);
             }
         });
@@ -121,4 +138,6 @@ public class ToDoListActivity extends AppCompatActivity {
 
 
     }
+
+
 }
