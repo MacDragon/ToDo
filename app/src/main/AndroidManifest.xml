@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ToDoListActivity">
+        <activity android:name=".ToDoListActivity" android:parentActivityName=".MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".ToDoItemEditorActivity"
@@ -28,7 +29,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ToDoListActivity" />
         </activity>
-        <activity android:name=".ViewToDoItemActivity">
+        <activity android:name=".ViewToDoItemActivity" android:parentActivityName=".ToDoListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ToDoListActivity"/>
         </activity>
         <activity android:name=".SettingsActivity">
         </activity>
