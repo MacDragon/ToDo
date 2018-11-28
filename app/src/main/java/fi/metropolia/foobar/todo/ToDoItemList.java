@@ -108,6 +108,7 @@ public class ToDoItemList {
     public ToDoItemList(String listName, Context context){
 
         this.context = context.getApplicationContext();
+        this.listName = listName;
         //new toDoList
 
     }

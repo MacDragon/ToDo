@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Selection;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,7 +46,13 @@ public class ToDoListActivity extends AppCompatActivity {
 
         //create dummy list and items
 
-        toDoItemList = new ToDoItemList("testlist", this);
+        Bundle extras = getIntent().getExtras();
+        String listName = extras.getString("listName");
+        Log.d(MainActivity.getTAG(), "onCreate: " + listName);
+        Log.d(MainActivity.getTAG(), "onCreate list: " + SelectionList.getInstance());
+
+        getSupportActionBar().setTitle(listName);
+        toDoItemList = SelectionList.getInstance().getToDoList(listName);
 
         ToDoItem toDoEntry = new ToDoItem("Test", "Nothing", false, false );
         toDoItemList.addItem(toDoEntry);
