@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SelectionList.createInstance(MainActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // inserted quick dummy to open straight to todolist for testing.
+                SelectionList.getInstance().addToDoList("testList");
                 Intent nextActivity = new Intent(MainActivity.this, ToDoListActivity.class);
+                nextActivity.putExtra("listName","testList" );
                 startActivity(nextActivity);
 
            //     Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
