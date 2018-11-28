@@ -33,11 +33,11 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             ((Button)findViewById(R.id.delete)).setVisibility(View.INVISIBLE);
             ((Switch)findViewById(R.id.done)).setVisibility(View.INVISIBLE);
             item = new ToDoItem("", "", false);
-            ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoList().size() + 1);
-            ((NumberPicker)findViewById(R.id.indexPicker)).setValue(list.getToDoList().size());
+            ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoListArray().size() + 1);
+            ((NumberPicker)findViewById(R.id.indexPicker)).setValue(list.getToDoListArray().size());
         } else {
             item = list.getToDoItem(i);
-            ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoList().size());
+            ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoListArray().size());
             ((NumberPicker)findViewById(R.id.indexPicker)).setValue(i + 1);
         }
         getSupportActionBar().setTitle(item.getTitle());
@@ -71,8 +71,8 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             item.setHighlight(((Switch)findViewById(R.id.highlight)).isChecked());
             item.setDone(((Switch)findViewById(R.id.done)).isChecked());
 
-            list.getToDoList().remove(i);
-            list.getToDoList().add(((NumberPicker)findViewById(R.id.indexPicker)).getValue() - 1, item);
+            list.getToDoListArray().remove(i);
+            list.getToDoListArray().add(((NumberPicker)findViewById(R.id.indexPicker)).getValue() - 1, item);
 
             Log.d("ToDo", item.toString());
 
@@ -87,7 +87,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                list.getToDoList().remove(i);
+                list.getToDoListArray().remove(i);
                 finish();
             }
         });
