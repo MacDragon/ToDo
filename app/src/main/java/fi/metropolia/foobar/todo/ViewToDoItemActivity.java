@@ -28,6 +28,9 @@ public class ViewToDoItemActivity extends AppCompatActivity {
         ((Switch)findViewById(R.id.showDone)).setChecked(item.isDone());
     }
 
+    /**
+     * When exiting the activity save the changes made
+     */
     @Override
     public void finish() {
         super.finish();
