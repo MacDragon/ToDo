@@ -63,7 +63,8 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             titleMissing.show();
             Log.d("ToDo", "Failed");
         } else {
-            Switch highlight = (Switch) findViewById(R.id.highlight);
+            Switch highlight = (Switch)
+                    findViewById(R.id.highlight); // switch casting might be redundant
             Switch done = (Switch) findViewById(R.id.done);
 
             item.setTitle(((TextView)findViewById(R.id.editTitle)).getText().toString());
