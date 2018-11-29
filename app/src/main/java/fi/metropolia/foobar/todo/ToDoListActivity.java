@@ -74,20 +74,6 @@ public class ToDoListActivity extends AppCompatActivity {
         toDoItemList = SelectionList.getInstance().getToDoList(listName);
 
         // temporary dummy items to allow quick testing, till saving and loading is working, no need to save the variable locally
-        toDoItemList.addItem(new ToDoItem("Test", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test2", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test3", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test4", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test5", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test6", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test7", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test8", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test9", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test10", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test11", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test12", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test13", "Nothing", false, false));
-        toDoItemList.addItem(new ToDoItem("Test14", "Nothing", false, false));
 
         // handle to adapter is saved so that we can tell it to update data later from onResume..
         adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList);
@@ -145,5 +131,9 @@ public class ToDoListActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        toDoItemList.saveList();
+    }
 }
