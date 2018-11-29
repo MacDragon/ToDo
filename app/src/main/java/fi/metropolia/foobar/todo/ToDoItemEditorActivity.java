@@ -34,19 +34,22 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             ((Switch)findViewById(R.id.done)).setVisibility(View.INVISIBLE);
             item = new ToDoItem("", "", false);
             ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoListArray().size() + 1);
-            ((NumberPicker)findViewById(R.id.indexPicker)).setValue(list.getToDoListArray().size());
+            ((NumberPicker)findViewById(R.id.indexPicker)).setValue(list.getToDoListArray().size() +1);
+            ((Button)findViewById(R.id.edit)).setText("Add");
+            getSupportActionBar().setTitle("Add");
         } else {
             item = list.getToDoItem(i);
             ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoListArray().size());
             ((NumberPicker)findViewById(R.id.indexPicker)).setValue(i + 1);
+            ((Button)findViewById(R.id.edit)).setText("Edit");
+            getSupportActionBar().setTitle(item.getTitle());
         }
-        getSupportActionBar().setTitle(item.getTitle());
         ((TextView)findViewById(R.id.editTitle)).setText(item.getTitle());
         ((TextView)findViewById(R.id.editDesc)).setText(item.getDescription());
         ((Switch)findViewById(R.id.highlight)).setChecked(item.isHighlight());
         ((Switch)findViewById(R.id.done)).setChecked(item.isDone());
 
-        ((Button)findViewById(R.id.edit)).setText("Edit");
+
 
     }
 
@@ -63,15 +66,13 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             titleMissing.show();
             Log.d("ToDo", "Failed");
         } else {
-            Switch highlight = (Switch) findViewById(R.id.highlight);
-            Switch done = (Switch) findViewById(R.id.done);
-
             item.setTitle(((TextView)findViewById(R.id.editTitle)).getText().toString());
             item.setDescription(((TextView)findViewById(R.id.editDesc)).getText().toString());
             item.setHighlight(((Switch)findViewById(R.id.highlight)).isChecked());
             item.setDone(((Switch)findViewById(R.id.done)).isChecked());
-
-            list.getToDoListArray().remove(i);
+            if (i != -1) {
+                list.getToDoListArray().remove(i);
+            }
             list.getToDoListArray().add(((NumberPicker)findViewById(R.id.indexPicker)).getValue() - 1, item);
 
             Log.d("ToDo", item.toString());
