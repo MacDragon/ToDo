@@ -24,7 +24,7 @@ public class ToDoListActivity extends AppCompatActivity {
   //  private Parcelable state = null;
 
     /**
-     * Returns the listrow adapter saved earlier for data refresh
+     * Returns the listrow adapter saved earlier so it can be used to request data refresh
      *
      * @return
      */
@@ -48,12 +48,6 @@ public class ToDoListActivity extends AppCompatActivity {
         // also pass -1 to indicate we are creating an item
         nextActivity.putExtra("ToDoItemIndex", -1);
         nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
-        // retrieve the listview handle so that we can save it's state
-    //    final ListView listView = (ListView) findViewById(R.id.toDoListView);
-        // store the current state of listview, so that it can be restored after
-    //    state = listView.onSaveInstanceState();
-        // activity is expecting to be returned to, so start as such.
-        //startActivityForResult(nextActivity);
         startActivity(nextActivity);
     }
 
@@ -78,9 +72,6 @@ public class ToDoListActivity extends AppCompatActivity {
         // extras failing when returning from editor - worked around by using launchmode singletop
         String listName = extras.getString("listName");
 
-      //  Log.d(MainActivity.getTAG(), "onCreate: " + listName);
-      //  Log.d(MainActivity.getTAG(), "onCreate list: " + SelectionList.getInstance());
-
         //set the 'title bar' to the listName, so that we know what list we are displaying.
         getSupportActionBar().setTitle(listName);
 
@@ -103,9 +94,6 @@ public class ToDoListActivity extends AppCompatActivity {
         toDoItemList.addItem(new ToDoItem("Test13", "Nothing", false, false));
         toDoItemList.addItem(new ToDoItem("Test14", "Nothing", false, false));
 
-
-    //    Log.d(MainActivity.getTAG(), "onCreate: " + toDoItemList);
-
         // handle to adapter is saved so that we can tell it to update data later from onResume..
         adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList);
 
@@ -120,14 +108,10 @@ public class ToDoListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(MainActivity.getTAG(), "onItemClick(" + i + ")");
                 Intent nextActivity = new Intent(ToDoListActivity.this, ViewToDoItemActivity.class);
                 // pass viewer the listname and index
                 nextActivity.putExtra("ToDoItemIndex", i);
                 nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
-          //      state = listView.onSaveInstanceState();
-                // activity is expecting to be returned to, so start as such.
-                //startActivityForResult(nextActivity);
                 startActivity(nextActivity);
             }
         });
@@ -139,12 +123,10 @@ public class ToDoListActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(MainActivity.getTAG(), "onItemClick(" + i + ")");
                 Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
                 // pass editor the listname and index
                 nextActivity.putExtra("ToDoItemIndex", i);
                 nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
-         //       state = listView.onSaveInstanceState();
                 startActivity(nextActivity);
                 return true;
             }
@@ -162,14 +144,9 @@ public class ToDoListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // retrieve the ListView object
-        ListView listView = (ListView) findViewById(R.id.toDoListView);
         // request listview updates it's content data incase it has been edited before resuming
         getAdapter().notifyDataSetChanged(); // doesn't seem to be needed now launchmode singletop
-      //  if (state != null) {  // if we have a saved state, then restore it
-    //        listView.onRestoreInstanceState(state); // no longer needed due to launchmode singletop
-      //      Log.d(MainActivity.getTAG(), "onResume: restore list status");
-       // }
+
 
     }
 
