@@ -1,6 +1,7 @@
 package fi.metropolia.foobar.todo;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -13,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
  */
 public class ToDoItemList {
     // ArrayList of ToDoitems, initialise to blank array at instancing
-    private ArrayList<ToDoItem> toDoList = new ArrayList<ToDoItem>();
+    private ArrayList<ToDoItem> toDoList;
     // name of list, which will be same as filename to store list.
     private String listName;
     // context needed to be able to get file handle for saving, this is passed on creation.
@@ -63,7 +64,7 @@ public class ToDoItemList {
      * method to save list to storage
      * @return
      */
-    public boolean saveList(){
+    public boolean saveList(){ // not yet being called, initial implementation
         // create google gson object to convert array list into a JSON string easily.
 
         Gson gson = new Gson();
@@ -90,7 +91,7 @@ public class ToDoItemList {
             return true; // file saved successfully
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(MainActivity.getTAG(), "Exception ");
+            Log.d(MainActivity.getTAG(), "Exception in file saving");
         }
 
         return false; // file did not save
@@ -109,6 +110,47 @@ public class ToDoItemList {
 
         this.context = context.getApplicationContext();
         this.listName = listName;
+
+        FileInputStream inputStream;
+        String fileData = "";
+
+        try {
+            inputStream = context.openFileInput(listName);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                fileData = bufferedReader.readLine();
+                inputStream.close();
+
+                Type listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
+                Gson gson = new Gson();
+                toDoList = gson.fromJson(fileData, listType);
+
+                Log.d(MainActivity.getTAG(), "Json data: " + fileData);
+            }
+
+        } catch (Exception e) {
+            // file read error, create new emptylist, populate with dummy values for now.
+            toDoList = new ArrayList<ToDoItem>();
+
+            toDoList.add(new ToDoItem("Test", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test2", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test3", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test4", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test5", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test6", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test7", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test8", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test9", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test10", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test11", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test12", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test13", "Nothing", false, false));
+            toDoList.add(new ToDoItem("Test14", "Nothing", false, false));
+
+        }
+
         //new toDoList
 
     }
