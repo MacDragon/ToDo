@@ -1,16 +1,11 @@
 package fi.metropolia.foobar.todo;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Selection;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 
 /**
  * Activity to show a todolist called from main selector activity
