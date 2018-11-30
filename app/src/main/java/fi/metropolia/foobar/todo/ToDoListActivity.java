@@ -1,11 +1,18 @@
 package fi.metropolia.foobar.todo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.EditText;
 
 /**
  * Activity to show a todolist called from main selector activity
@@ -16,7 +23,52 @@ public class ToDoListActivity extends AppCompatActivity {
     private ToDoItemList toDoItemList;
     private ToDoListRowAdapter adapter;
 
-  //  private Parcelable state = null;
+    // https://developer.android.com/guide/topics/ui/dialogs#CustomLayout how to implement a dialog in android
+
+
+    /**
+     *  load options menu layout to add rename to actionbar.
+      */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.todo_list_menu, menu);
+        return true;
+    }
+
+    public void listRename(MenuItem item){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Rename list");
+
+        final EditText input = new EditText(this);
+
+
+        input.setText(toDoItemList.getListName());
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                toDoItemList.saveList( input.getText().toString());
+                getSupportActionBar().setTitle(toDoItemList.getListName());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+
+
+
+    }
 
     /**
      * Returns the listrow adapter saved earlier so it can be used to request data refresh
