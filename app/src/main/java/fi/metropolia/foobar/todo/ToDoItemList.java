@@ -39,7 +39,6 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
     }
 
-
     /**
      * Returns a ToDo Lists name.
      * @return
@@ -59,6 +58,16 @@ public class ToDoItemList {
         return toDoList.get(index);
     }
 
+    /** save list with specific name, which can rename file if new name.
+     *
+     * @param listName
+     * @return
+     */
+
+    public boolean saveList(String listName){
+
+      return false;
+    }
 
     /**
      * method to save list to storage
@@ -98,6 +107,11 @@ public class ToDoItemList {
     }
 
 
+    @Override
+    public String toString() {
+        return listName;
+    }
+
     /**
      * Load ( or create if it doesn't already exist ) a new list.
      * ListName must not be blank.
@@ -106,28 +120,37 @@ public class ToDoItemList {
      * @param context
      */
 
+
+
     public ToDoItemList(String listName, Context context){
 
         this.context = context.getApplicationContext();
         this.listName = listName;
 
+        // object to define file
         FileInputStream inputStream;
         String fileData = "";
 
-        try {
+        try { // attempt to open file, fall back to catch section if there is a read error ( file doesn't exist )
             inputStream = context.openFileInput(listName);
 
-            if ( inputStream != null ) {
+            if ( inputStream != null ) { // if we managed to open file try to read it
+                // create input stream reader to convert byte data from file to char data for string
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                // create bufferedreader to read the actual data
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                // read line of data from file, as we are only saving a single string to file, there will only be one line
+                // in a more complex application the whole file would have to be parsed through
                 fileData = bufferedReader.readLine();
                 inputStream.close();
 
+                // TypeToken creates a representation of the arraylist of ToDoItem objects
+                // that Gson needs to be able to create the arraylist from the input string.
                 Type listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
                 Gson gson = new Gson();
                 toDoList = gson.fromJson(fileData, listType);
 
-                Log.d(MainActivity.getTAG(), "Json data: " + fileData);
+      //          Log.d(MainActivity.getTAG(), "Json data: " + fileData);
             }
 
         } catch (Exception e) {
