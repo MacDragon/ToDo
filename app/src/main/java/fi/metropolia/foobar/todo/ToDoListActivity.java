@@ -38,11 +38,13 @@ public class ToDoListActivity extends AppCompatActivity {
     }
 
     public void listRename(MenuItem item){
+
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Rename list");
 
         final EditText input = new EditText(this);
-
 
         input.setText(toDoItemList.getListName());
 
@@ -65,7 +67,22 @@ public class ToDoListActivity extends AppCompatActivity {
 
         builder.show();
 
+    }
 
+    public void listDelete(MenuItem item){
+
+
+        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
+        confirmDelete.setTitle("Delete item");
+        confirmDelete.setMessage("Are you sure you want to delete this item?");
+        confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                toDo.getToDoListArray().remove(i);
+                finish();
+            }
+        });
+        confirmDelete.setNegativeButton("Cancel", null).show();
 
 
     }

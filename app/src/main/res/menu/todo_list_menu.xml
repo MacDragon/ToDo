@@ -2,9 +2,14 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="fi.metropolia.foobar.todo.ToDoListActivity">
+    <item android:id="@+id/deleteList"
+          android:title="Rename"
+          android:orderInCategory="100"
+          android:onClick="listDelete"
+          app:showAsAction="ifRoom"/>
     <item android:id="@+id/renameList"
           android:title="Rename"
           android:orderInCategory="100"
           android:onClick="listRename"
-          app:showAsAction="always"/>
+          app:showAsAction="ifRoom"/>
 </menu>
