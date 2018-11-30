@@ -56,9 +56,6 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.editDesc)).setText(item.getDescription());
         ((Switch)findViewById(R.id.highlight)).setChecked(item.isHighlight());
         ((Switch)findViewById(R.id.done)).setChecked(item.isDone());
-
-
-
     }
 
     /**
