@@ -91,7 +91,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
             });
             titleMissing.show(); //Show dialog box
             Log.d("ToDo", "Failed");
-        } else if(list.itemExists(titleView.getText().toString())) {
+        } else if(list.itemExists(titleView.getText().toString()) && !(item.getTitle().equals(titleView.getText().toString()))) {
             AlertDialog.Builder itemExists = new AlertDialog.Builder(this); // Creating alertDialog
             itemExists.setTitle("Item already exists!"); // Set alert dialogs title
             itemExists.setMessage("This list already contains an item with this name."); // Set dialog's message
@@ -101,7 +101,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                 }
             });
-            titleMissing.show(); //Show dialog box
+            itemExists.show(); //Show dialog box
         } else {
             // Set new values to selected item
             item.setTitle(titleView.getText().toString());
