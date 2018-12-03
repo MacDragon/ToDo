@@ -128,7 +128,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
         // get the actual list object so we can work with it.
         toDoItemList = SelectionList.getInstance().getToDoList(listName);
-        //added by rafe for testing
+
 
 
         // temporary dummy items to allow quick testing, till saving and loading is working, no need to save the variable locally
