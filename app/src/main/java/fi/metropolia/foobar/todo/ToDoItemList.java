@@ -30,6 +30,17 @@ public class ToDoItemList {
         return toDoList;
     }
 
+    public boolean itemExists(String item){
+        for (ToDoItem i:
+                toDoList) {
+            if(i.getTitle().equals(item)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public void deleteList(){
         File listFile =  context.getFileStreamPath(this.listName);
         listFile.delete();
