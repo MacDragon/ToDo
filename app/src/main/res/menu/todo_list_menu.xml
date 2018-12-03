@@ -3,7 +3,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="fi.metropolia.foobar.todo.ToDoListActivity">
     <item android:id="@+id/deleteList"
-          android:title="Rename"
+          android:title="Delete"
           android:orderInCategory="100"
           android:onClick="listDelete"
           app:showAsAction="ifRoom"/>

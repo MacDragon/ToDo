@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +26,18 @@ public class MainActivity extends AppCompatActivity {
         SelectionList.createInstance(MainActivity.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //created a new userinterface object (listView) to activity_main.xml
+        //created new instance (lv) of ListView
+        //setting adapter for lv to display all lists with simple layout
+        ListView lv = findViewById(R.id.mainListViewTaskList);
+
+        lv.setAdapter(new ArrayAdapter<ToDoItemList>(
+                this,
+                android.R.layout.simple_list_item_1,
+                SelectionList.getInstance().getToDoLists())
+        );
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
