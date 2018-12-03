@@ -7,9 +7,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -23,13 +25,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         SelectionList.createInstance(MainActivity.this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         //created a new userinterface object (listView) to activity_main.xml
         //created new instance (lv) of ListView
         //setting adapter for lv to display all lists with simple layout
+
         ListView lv = findViewById(R.id.mainListViewTaskList);
 
         lv.setAdapter(new ArrayAdapter<ToDoItemList>(
@@ -39,7 +45,19 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.d("check1", "onItemClick(" + position + ")");
+                String nameOfListToOpen = SelectionList.getInstance().getToDoListByIndex(position).getListName();
+                Intent intent = new Intent(MainActivity.this, ToDoListActivity.class);
+                intent.putExtra("listName", nameOfListToOpen);
+                startActivity(intent);
+            }
+        });
+
+
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
            //             .setAction("Action", null).show();
             }
         });
-    }
-
+    }*/
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -75,5 +93,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }*/
     }
 }
