@@ -32,9 +32,10 @@ public class ViewToDoItemActivity extends AppCompatActivity {
      * When exiting the activity save the changes made
      */
     @Override
-    public void finish() {
-        super.finish();
+    public void onPause() {
         item.setHighlight(((Switch)findViewById(R.id.showHighlight)).isChecked());
         item.setDone(((Switch)findViewById(R.id.showDone)).isChecked());
+        Log.d("ToDo", "finish: test");
+        super.onPause();
     }
 }
