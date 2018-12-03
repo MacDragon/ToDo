@@ -45,6 +45,28 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
     }
 
+    public int size(){
+      return toDoList.size();
+    }
+
+    public boolean add(ToDoItem item){
+
+        return toDoList.add(item);
+    }
+
+    public void add(int index, ToDoItem item){
+        toDoList.add(index, item);
+    }
+
+    public ToDoItem remove(int index){
+        return toDoList.remove(index);
+    }
+
+    public boolean remove(ToDoItem item){
+        return toDoList.remove(item);
+    }
+
+
     /**
      * Returns a ToDo Lists name.
      * @return
