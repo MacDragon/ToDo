@@ -223,7 +223,7 @@ public class ToDoItemList {
             // populate with dummy values for quick testing purposes.
             toDoList = new ArrayList<ToDoItem>();
 // ask eemeli to update todoeditor to use addnewtodoitem rather than directly calling add method.
-            addToDoItem(new ToDoItem("Test", "Nothing", false, false));
+     /*       addToDoItem(new ToDoItem("Test", "Nothing", false, false));
             addToDoItem(new ToDoItem("Test2", "Nothing", false, false));
             addToDoItem(new ToDoItem("Test3", "Nothing", false, false));
             addToDoItem(new ToDoItem("Test4", "Nothing", false, false));
@@ -236,7 +236,7 @@ public class ToDoItemList {
             addToDoItem(new ToDoItem("Test11", "Nothing", false, false));
             addToDoItem(new ToDoItem("Test12", "Nothing", false, false));
             addToDoItem(new ToDoItem("Test13", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test14", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test14", "Nothing", false, false));*/
 
         }
 
