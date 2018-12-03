@@ -22,7 +22,6 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
     /**
      * Gets the selected list, item and items index.
      * Checks if user is adding new item or editing old one.
-     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +35,9 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
         ((NumberPicker)findViewById(R.id.indexPicker)).setMinValue(1);
         //Check if user is creating a new item
         if (i == -1) {
-            //Hide unnecessary widgets when creating new item
-            ((Button)findViewById(R.id.delete)).setVisibility(View.INVISIBLE);
-            ((Switch)findViewById(R.id.done)).setVisibility(View.INVISIBLE);
-            item = new ToDoItem("", "", false);
+            ((Button)findViewById(R.id.delete)).setVisibility(View.INVISIBLE); // Hide delete button
+            ((Switch)findViewById(R.id.done)).setVisibility(View.INVISIBLE); // Hide done switch
+            item = new ToDoItem("", "", false); // Create empty ToDoItem
             ((NumberPicker)findViewById(R.id.indexPicker)).setMaxValue(list.getToDoListArray().size() + 1);
             ((NumberPicker)findViewById(R.id.indexPicker)).setValue(list.getToDoListArray().size() +1);
             ((Button)findViewById(R.id.edit)).setText("Add");
@@ -60,7 +58,7 @@ public class ToDoItemEditorActivity extends AppCompatActivity {
 
     /**
      * Method to add/save the item to the list.
-     * Also checks if the item is missing a title and denies the edit
+     * Check if the new title is empty --> open dialog box and don't save.
      */
 
     public void onAddClick(View v) {
