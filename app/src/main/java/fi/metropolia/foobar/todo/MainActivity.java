@@ -1,5 +1,6 @@
 package fi.metropolia.foobar.todo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,6 +105,51 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void addListButton (View view){
+        final Context context = this;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add List");
+        final View inflatedView = view.inflate(this, R.layout.dialog_rename_list, null);
+        final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
+        input.setHint("List Name To Add");
+        builder.setView(inflatedView);
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (input.getText().toString().equals("")){
+                    //implement validation error dialog
+
+                    AlertDialog.Builder missingTitle = new AlertDialog.Builder(context);
+                    missingTitle.setTitle("Cannot Create List");
+                    missingTitle.setMessage("List Must have a name");
+                    missingTitle.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    missingTitle.show();
+                }else{
+                        SelectionList.getInstance().addToDoList(input.getText().toString());
+                    Intent intent = new Intent(MainActivity.this, ToDoListActivity.class);
+                    intent.putExtra("listName", input.getText().toString());
+                    startActivity(intent);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+
+        builder.show();
+
 
     }
+
 }
