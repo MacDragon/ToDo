@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
     private Context context;
+    private ArrayAdapter<ToDoItemList> arrayAdapter;
 
     public static String getTAG() {
         return "ToDo";
@@ -42,14 +43,15 @@ public class MainActivity extends AppCompatActivity {
         //created a new userinterface object (listView) to activity_main.xml
         //created new instance (lv) of ListView
         //setting adapter for lv to display all lists with simple layout
+        arrayAdapter = new ArrayAdapter<ToDoItemList>(
+                this,
+                android.R.layout.simple_list_item_1,
+                SelectionList.getInstance().getToDoLists()
+        );
 
         ListView lv = findViewById(R.id.mainListViewTaskList);
 
-        lv.setAdapter(new ArrayAdapter<ToDoItemList>(
-                this,
-                android.R.layout.simple_list_item_1,
-                SelectionList.getInstance().getToDoLists())
-        );
+        lv.setAdapter(arrayAdapter);
 
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -108,6 +110,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        arrayAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    protected  void onPause(){
+        super.onPause();
+    }
+
+
 
     public void addListButton (View view){
         final Context context = this;
