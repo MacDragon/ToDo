@@ -14,14 +14,15 @@ class SelectionList {
         return ourInstance;
     }
 
-    private SelectionList(Context
-                                  context) {
+    private SelectionList(Context context) {
         this.context = context;
         selectionList = new ArrayList<ToDoItemList>();
+
+
         selectionList.add(new ToDoItemList("testList1", context));
-
+        selectionList.add(new ToDoItemList("toDoList0", context));
         // for testing purposes of the main activity. creating multiple separate task lists
-
+        //read fileList directly and populate array from their  Hint: to call fileList() method from Context class
         selectionList.add(new ToDoItemList("testList2", context));
         selectionList.add(new ToDoItemList("testList3", context));
         selectionList.add(new ToDoItemList("testList4", context));
@@ -55,6 +56,11 @@ class SelectionList {
     public ArrayList<ToDoItemList> getToDoLists(){
         //return all lists saved in the selectionList
         return selectionList;
+    }
+
+    public ToDoItemList getToDoListByIndex(int i){
+        return selectionList.get(i);
+
     }
 
 

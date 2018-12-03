@@ -39,6 +39,8 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
     }
 
+
+
     /**
      * Returns a ToDo Lists name.
      * @return
@@ -172,6 +174,14 @@ public class ToDoItemList {
             toDoList.add(new ToDoItem("Test13", "Nothing", false, false));
             toDoList.add(new ToDoItem("Test14", "Nothing", false, false));
 
+           // ToDoItem item1 = new ToDoItem("Task1", "Nothing", false, false);
+          /*  SelectionList.getInstance().getToDoListByIndex(0).addItem(new ToDoItem("Task01", "Nothing", false, false));
+            SelectionList.getInstance().getToDoListByIndex(0).addItem(new ToDoItem("Task02", "Nothing", false, false));
+            SelectionList.getInstance().getToDoListByIndex(0).addItem(new ToDoItem("Task03", "Nothing", false, false));
+
+            SelectionList.getInstance().getToDoListByIndex(1).addItem(new ToDoItem("Task11", "Nothing", false, false));
+            SelectionList.getInstance().getToDoListByIndex(1).addItem(new ToDoItem("Task12", "Nothing", false, false));
+            SelectionList.getInstance().getToDoListByIndex(1).addItem(new ToDoItem("Task13", "Nothing", false, false));*/
         }
 
         //new toDoList

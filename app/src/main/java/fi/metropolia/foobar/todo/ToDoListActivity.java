@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.todo_list_menu, menu);
         return true;
@@ -91,7 +93,7 @@ public class ToDoListActivity extends AppCompatActivity {
     public void addClick(View view){
         // create the intent object to call editor activity
         Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
-        // set extras informatino to specify the list name so editor can use right list
+        // set extras information to specify the list name so editor can use right list
         // also pass -1 to indicate we are creating an item
         nextActivity.putExtra("ToDoItemIndex", -1);
         nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
@@ -109,21 +111,25 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // specifity the activities layout file
+        // specify the activities layout file
         setContentView(R.layout.activity_to_do_list);
 
         //create dummy list and items
 
         // retrieve the extras information in order to get the passed listname to display
         Bundle extras = getIntent().getExtras();
+
+
         // extras failing when returning from editor - worked around by using launchmode singletop
-        String listName = extras.getString("listName");
+        String listName = extras.getString("listName", "");
 
         //set the 'title bar' to the listName, so that we know what list we are displaying.
         getSupportActionBar().setTitle(listName);
 
         // get the actual list object so we can work with it.
         toDoItemList = SelectionList.getInstance().getToDoList(listName);
+        //added by rafe for testing
+
 
         // temporary dummy items to allow quick testing, till saving and loading is working, no need to save the variable locally
 
