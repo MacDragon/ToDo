@@ -21,13 +21,19 @@ public class ToDoItemList {
     private Context context;
 
     /**
-     * Return this class instances list of todo items
+     * Return this class instances list of todo items, primarily to use for array adapter.
      *
      * @return
      */
 
     public ArrayList<ToDoItem> getToDoListArray() {
         return toDoList;
+    }
+
+    public void deleteList(){
+        File listFile =  context.getFileStreamPath(this.listName);
+        listFile.delete();
+        // implement deleting list. should probably be moved up level into selectionlist.
     }
 
     /**
@@ -39,6 +45,26 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
     }
 
+    public int size(){
+      return toDoList.size();
+    }
+
+    public boolean add(ToDoItem item){
+
+        return toDoList.add(item);
+    }
+
+    public void add(int index, ToDoItem item){
+        toDoList.add(index, item);
+    }
+
+    public ToDoItem remove(int index){
+        return toDoList.remove(index);
+    }
+
+    public boolean remove(ToDoItem item){
+        return toDoList.remove(item);
+    }
 
 
     /**
@@ -67,8 +93,27 @@ public class ToDoItemList {
      */
 
     public boolean saveList(String listName){
+        if ( !this.listName.equals(listName)){
+            // rename file because listName has changed. If name same as before, just call regular savelist
+            // if new name exists return false and do nothing.
+            File listFile =  context.getFileStreamPath(this.listName);
+            File newListFile = new File(listFile.getParent(), listName);
+            if (newListFile.exists()){
+                // trying to rename list to something that already exists, abandon.
+                return false;
+            }
+            if (listFile.renameTo(newListFile) ) {
+                // rename succeeded, so lets change title.
+                this.listName = listName;
+                saveList();
+                return true;
+            }
 
-      return false;
+            // attempt to rename the file
+        } else {
+            saveList(); // nothing changed in name, proceed as usual.
+        }
+        return true;
     }
 
     /**
@@ -86,8 +131,7 @@ public class ToDoItemList {
 
         Log.d(MainActivity.getTAG(), "Json data: " + jsonConvertedArrayList);
 
-
-        // create file object
+        // create file streaming object
 
         FileOutputStream outputStream;
 
@@ -114,6 +158,16 @@ public class ToDoItemList {
         return listName;
     }
 
+
+    public void addToDoItem(ToDoItem toDoItem){
+        toDoList.add(toDoItem);
+        saveList();
+    }
+
+    public void removeToDoItem(int index){
+        toDoList.remove(index);
+    }
+
     /**
      * Load ( or create if it doesn't already exist ) a new list.
      * ListName must not be blank.
@@ -123,7 +177,6 @@ public class ToDoItemList {
      */
 
 
-
     public ToDoItemList(String listName, Context context){
 
         this.context = context.getApplicationContext();
@@ -131,7 +184,6 @@ public class ToDoItemList {
 
         // object to define file
         FileInputStream inputStream;
-        String fileData = "";
 
         try { // attempt to open file, fall back to catch section if there is a read error ( file doesn't exist )
             inputStream = context.openFileInput(listName);
@@ -143,7 +195,7 @@ public class ToDoItemList {
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 // read line of data from file, as we are only saving a single string to file, there will only be one line
                 // in a more complex application the whole file would have to be parsed through
-                fileData = bufferedReader.readLine();
+                String fileData = bufferedReader.readLine();
                 inputStream.close();
 
                 // TypeToken creates a representation of the arraylist of ToDoItem objects
@@ -156,35 +208,26 @@ public class ToDoItemList {
             }
 
         } catch (Exception e) {
-            // file read error, create new emptylist, populate with dummy values for now.
+            // file read error, file doesn't exist. Create new emptylist
+            // populate with dummy values for quick testing purposes.
             toDoList = new ArrayList<ToDoItem>();
+// ask eemeli to update todoeditor to use addnewtodoitem rather than directly calling add method.
+            addToDoItem(new ToDoItem("Test", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test2", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test3", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test4", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test5", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test6", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test7", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test8", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test9", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test10", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test11", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test12", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test13", "Nothing", false, false));
+            addToDoItem(new ToDoItem("Test14", "Nothing", false, false));
 
-            toDoList.add(new ToDoItem("Test", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test2", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test3", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test4", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test5", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test6", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test7", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test8", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test9", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test10", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test11", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test12", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test13", "Nothing", false, false));
-            toDoList.add(new ToDoItem("Test14", "Nothing", false, false));
-
-           // ToDoItem item1 = new ToDoItem("Task1", "Nothing", false, false);
-          /*  SelectionList.getInstance().getToDoListByIndex(0).addItem(new ToDoItem("Task01", "Nothing", false, false));
-            SelectionList.getInstance().getToDoListByIndex(0).addItem(new ToDoItem("Task02", "Nothing", false, false));
-            SelectionList.getInstance().getToDoListByIndex(0).addItem(new ToDoItem("Task03", "Nothing", false, false));
-
-            SelectionList.getInstance().getToDoListByIndex(1).addItem(new ToDoItem("Task11", "Nothing", false, false));
-            SelectionList.getInstance().getToDoListByIndex(1).addItem(new ToDoItem("Task12", "Nothing", false, false));
-            SelectionList.getInstance().getToDoListByIndex(1).addItem(new ToDoItem("Task13", "Nothing", false, false));*/
         }
-
-        //new toDoList
 
     }
 

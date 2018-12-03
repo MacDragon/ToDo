@@ -1,16 +1,13 @@
 package fi.metropolia.foobar.todo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.EditText;
@@ -33,7 +30,6 @@ public class ToDoListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.todo_list_menu, menu);
         return true;
@@ -42,20 +38,42 @@ public class ToDoListActivity extends AppCompatActivity {
     public void listRename(MenuItem item){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Rename list");
+        final Context renameContext = this;
 
-        final EditText input = new EditText(this);
+        // get a view from activity in order to use inflator so that we can use a dialog resource file to create a nicer formatted dialog easily
+        // as Menuitem does not seem to have this available.
 
+        final View inflatedView = (View)findViewById(R.id.toDoListView).inflate(renameContext,R.layout.dialog_rename_list, null);
+
+        // link edittext to local object.
+
+        final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
 
         input.setText(toDoItemList.getListName());
 
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+        builder.setView(inflatedView);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                toDoItemList.saveList( input.getText().toString());
-                getSupportActionBar().setTitle(toDoItemList.getListName());
+                // try to rename list
+                 if (!toDoItemList.saveList( input.getText().toString())){
+                     // rename failed, assume file exists, give error.
+                     final View viewHandle = (View)findViewById(R.id.toDoListView).inflate(renameContext,R.layout.dialog_rename_list, null);
+                     AlertDialog.Builder titleMissing = new AlertDialog.Builder(renameContext);
+                     titleMissing.setTitle("Rename failed");
+                     titleMissing.setMessage("List name already exists?");
+                     titleMissing.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialog, int which) {
+                         }
+                     });
+                     titleMissing.show();
+
+                 } else {
+                     getSupportActionBar().setTitle(toDoItemList.getListName());
+                 }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -67,7 +85,22 @@ public class ToDoListActivity extends AppCompatActivity {
 
         builder.show();
 
+    }
 
+    public void listDelete(MenuItem item){
+
+        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
+        confirmDelete.setTitle("Delete item");
+        confirmDelete.setMessage("Are you sure you want to delete this item?");
+        confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                toDoItemList.deleteList();
+                SelectionList.getInstance().getToDoLists().remove(toDoItemList);
+                finish();
+            }
+        });
+        confirmDelete.setNegativeButton("Cancel", null).show();
 
 
     }
@@ -93,7 +126,7 @@ public class ToDoListActivity extends AppCompatActivity {
     public void addClick(View view){
         // create the intent object to call editor activity
         Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
-        // set extras information to specify the list name so editor can use right list
+        // set extras informatino to specify the list name so editor can use right list
         // also pass -1 to indicate we are creating an item
         nextActivity.putExtra("ToDoItemIndex", -1);
         nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
@@ -111,27 +144,21 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // specify the activities layout file
+        // specifity the activities layout file
         setContentView(R.layout.activity_to_do_list);
 
         //create dummy list and items
 
         // retrieve the extras information in order to get the passed listname to display
         Bundle extras = getIntent().getExtras();
-
-
         // extras failing when returning from editor - worked around by using launchmode singletop
-        String listName = extras.getString("listName", "");
+        String listName = extras.getString("listName");
 
         //set the 'title bar' to the listName, so that we know what list we are displaying.
         getSupportActionBar().setTitle(listName);
 
         // get the actual list object so we can work with it.
         toDoItemList = SelectionList.getInstance().getToDoList(listName);
-
-
-
-        // temporary dummy items to allow quick testing, till saving and loading is working, no need to save the variable locally
 
         // handle to adapter is saved so that we can tell it to update data later from onResume..
         adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList);
