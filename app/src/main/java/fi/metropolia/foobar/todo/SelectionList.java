@@ -14,10 +14,23 @@ class SelectionList {
         return ourInstance;
     }
 
-    private SelectionList(Context context) {
+    private SelectionList(Context
+                                  context) {
         this.context = context;
         selectionList = new ArrayList<ToDoItemList>();
         selectionList.add(new ToDoItemList("testList1", context));
+
+        // for testing purposes of the main activity. creating multiple separate task lists
+
+        selectionList.add(new ToDoItemList("testList2", context));
+        selectionList.add(new ToDoItemList("testList3", context));
+        selectionList.add(new ToDoItemList("testList4", context));
+        selectionList.add(new ToDoItemList("testList5", context));
+        selectionList.add(new ToDoItemList("testList6", context));
+        selectionList.add(new ToDoItemList("testList7", context));
+        selectionList.add(new ToDoItemList("testList8", context));
+        selectionList.add(new ToDoItemList("testList9", context));
+        selectionList.add(new ToDoItemList("testList10", context));
     }
 
     public static void createInstance(Context context){
@@ -36,7 +49,12 @@ class SelectionList {
                 return currentList;
             }
         }
-        return null; //if the method has not return anything already. it will return null. 
+        return null; //if the method has not return anything already. it will return null.
+    }
+
+    public ArrayList<ToDoItemList> getToDoLists(){
+        //return all lists saved in the selectionList
+        return selectionList;
     }
 
 
