@@ -64,9 +64,10 @@ public class ToDoListActivity extends AppCompatActivity {
                      AlertDialog.Builder titleMissing = new AlertDialog.Builder(renameContext);
                      titleMissing.setTitle("Rename failed");
                      titleMissing.setMessage("List name already exists?");
-                     titleMissing.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                     titleMissing.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                          @Override
                          public void onClick(DialogInterface dialog, int which) {
+                             dialog.cancel();
                          }
                      });
                      titleMissing.show();
@@ -91,7 +92,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
         AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
         confirmDelete.setTitle("Delete item");
-        confirmDelete.setMessage("Are you sure you want to delete this item?");
+        confirmDelete.setMessage("Are you sure you want to delete this list?");
         confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -212,8 +213,6 @@ public class ToDoListActivity extends AppCompatActivity {
         super.onResume();
         // request listview updates it's content data incase it has been edited before resuming
         getAdapter().notifyDataSetChanged(); // doesn't seem to be needed now launchmode singletop
-
-
     }
 
     @Override
