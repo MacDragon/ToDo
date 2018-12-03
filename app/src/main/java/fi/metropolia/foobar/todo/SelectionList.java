@@ -63,7 +63,15 @@ class SelectionList {
 
     }
 
+    public boolean listExists(String listName){
+        for (ToDoItemList currentList: selectionList){
+            if(currentList.getListName().equals(listName)){
+                return true;
+            }
 
+        }
+        return false;
+    }
 
 
 

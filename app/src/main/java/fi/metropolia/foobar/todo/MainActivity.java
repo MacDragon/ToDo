@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
+    private Context context;
 
     public static String getTAG() {
         return "ToDo";
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -120,22 +122,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 if (input.getText().toString().equals("")){
                     //implement validation error dialog
+                    displayErrorDialog("Cannot Create List", "List Must have a name");
 
-                    AlertDialog.Builder missingTitle = new AlertDialog.Builder(context);
-                    missingTitle.setTitle("Cannot Create List");
-                    missingTitle.setMessage("List Must have a name");
-                    missingTitle.setNegativeButton("ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    missingTitle.show();
                 }else{
+                    if(SelectionList.getInstance().listExists(input.getText().toString())){
+                        displayErrorDialog("Cannot Create List", "List already exists");
+                    }else{
                         SelectionList.getInstance().addToDoList(input.getText().toString());
-                    Intent intent = new Intent(MainActivity.this, ToDoListActivity.class);
-                    intent.putExtra("listName", input.getText().toString());
-                    startActivity(intent);
+                        Intent intent = new Intent(MainActivity.this, ToDoListActivity.class);
+                        intent.putExtra("listName", input.getText().toString());
+                        startActivity(intent);
+                    }
+
                 }
             }
         });
@@ -150,6 +148,19 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
 
 
+    }
+
+    private void displayErrorDialog(String title, String message){
+        AlertDialog.Builder missingTitle = new AlertDialog.Builder(context);
+        missingTitle.setTitle(title);
+        missingTitle.setMessage(message);
+        missingTitle.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        missingTitle.show();
     }
 
 }
