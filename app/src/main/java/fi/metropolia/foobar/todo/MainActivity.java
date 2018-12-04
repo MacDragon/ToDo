@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity{
         SelectionList.createInstance(MainActivity.this);
 
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -66,6 +68,13 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+
+        if(SelectionList.getInstance().isEmpty()){
+            //dialog box similar to one
+            addListButton(lv);
+
+        }
+
     }
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -92,20 +101,11 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
 
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
+       public void preferenceClick(MenuItem item){
+           Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
+           startActivity(nextActivity);
 
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
+       }
 
 
 

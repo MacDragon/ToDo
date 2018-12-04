@@ -189,7 +189,7 @@ class SelectionList {
             Log.d("test2", "file read");
             for (File file : savedFiles) {
                 // Here is each file
-                if (file.getName() == listName) {
+                if (file.getName().equals(listName)) {
                     file.delete();
 
                 }
