@@ -19,7 +19,9 @@ package fi.metropolia.foobar.todo;
 
 */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -40,6 +42,8 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
 
     private int textColor;
     private int backGroundColor;
+
+    private int[] colorValues = {Color.YELLOW,Color.CYAN,Color.RED};
 
     /**
      * As the check box can cause a live change of ToDo status, formatting split into own method to avoid duplication.
@@ -126,7 +130,10 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
         if(toDoList.getToDoItem(position).isHighlight())
         {
         // Set a background color for ListView regular row/item
-            convertView.setBackgroundColor(Color.YELLOW);
+            SharedPreferences getPref = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+
+
+            convertView.setBackgroundColor(colorValues[getPref.getInt("selection", 0)]);
         }
         else
         {
