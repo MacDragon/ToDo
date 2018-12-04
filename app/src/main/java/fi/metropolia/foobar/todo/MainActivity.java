@@ -101,11 +101,6 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
 
-       public void preferenceClick(MenuItem item){
-           Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
-           startActivity(nextActivity);
-
-       }
 
 
 
@@ -182,5 +177,12 @@ public class MainActivity extends AppCompatActivity{
         });
         missingTitle.show();
     }
+
+    public void preferenceClick(MenuItem item){
+        Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(nextActivity);
+
+    }
+
 
 }
