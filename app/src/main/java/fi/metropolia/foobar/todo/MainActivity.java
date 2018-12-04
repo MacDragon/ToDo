@@ -114,11 +114,11 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume(){
         super.onResume();
         arrayAdapter.notifyDataSetChanged();
-        /*if(SelectionList.getInstance().isEmpty()){
+        if(SelectionList.getInstance().isEmpty()){
             //dialog box similar to one
-            addListButton(lv);
+            addListButton(findViewById(R.id.mainListViewTaskList));
 
-        }*/
+        }
 
     }
 
