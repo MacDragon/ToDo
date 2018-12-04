@@ -19,6 +19,7 @@ public class ToDoItemList {
     private String listName;
     // context needed to be able to get file handle for saving, this is passed on creation.
     private Context context;
+    private boolean deleted;
 
     /**
      * Return this class instances list of todo items, primarily to use for array adapter.
@@ -56,6 +57,10 @@ public class ToDoItemList {
     public boolean add(ToDoItem item){
 
         return toDoList.add(item);
+    }
+
+    public void delete(){
+        deleted = true;
     }
 
     public void add(int index, ToDoItem item){
@@ -100,6 +105,7 @@ public class ToDoItemList {
         if ( !this.listName.equals(listName)){
             // rename file because listName has changed. If name same as before, just call regular savelist
             // if new name exists return false and do nothing.
+            Log.d(MainActivity.getTAG(), "saveList: with listname");
             File listFile =  context.getFileStreamPath(this.listName);
             File newListFile = new File(listFile.getParent(), listName);
             if (newListFile.exists()){
@@ -115,6 +121,7 @@ public class ToDoItemList {
 
             // attempt to rename the file
         } else {
+            Log.d(MainActivity.getTAG(), "saveList: else");
             saveList(); // nothing changed in name, proceed as usual.
         }
         return true;
@@ -126,10 +133,13 @@ public class ToDoItemList {
      */
     public boolean saveList(){ // not yet being called, initial implementation
         // create google gson object to convert array list into a JSON string easily.
+        if ( !deleted ) {
 
         Gson gson = new Gson();
 
         // string to hold JSON data.
+
+        Log.d(MainActivity.getTAG(), "saveList: "+listName);
 
         String jsonConvertedArrayList = gson.toJson(toDoList);
 
@@ -152,6 +162,7 @@ public class ToDoItemList {
             e.printStackTrace();
             Log.d(MainActivity.getTAG(), "Exception in file saving");
 
+        }
         }
 
         return false; // file did not save
@@ -184,6 +195,7 @@ public class ToDoItemList {
 
 
     public ToDoItemList(String listName, Context context){
+        deleted = false;
 
         this.context = context.getApplicationContext();
         this.listName = listName;

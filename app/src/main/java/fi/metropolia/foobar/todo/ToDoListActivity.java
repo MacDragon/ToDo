@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -98,8 +99,6 @@ public class ToDoListActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
             /*    toDoItemList.deleteList(); */
                 SelectionList.getInstance().deleteList(toDoItemList.getListName());
-
-
                 finish();
             }
         });
@@ -220,6 +219,7 @@ public class ToDoListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(MainActivity.getTAG(), "onPause: ");
         toDoItemList.saveList();
     }
 }
