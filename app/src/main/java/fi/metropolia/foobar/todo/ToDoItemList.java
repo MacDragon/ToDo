@@ -19,6 +19,7 @@ public class ToDoItemList {
     private String listName;
     // context needed to be able to get file handle for saving, this is passed on creation.
     private Context context;
+    private boolean deleted;
 
     /**
      * Return this class instances list of todo items, primarily to use for array adapter.
@@ -31,20 +32,13 @@ public class ToDoItemList {
     }
 
     public boolean itemExists(String item){
-        for (ToDoItem i:
-                toDoList) {
+        for (ToDoItem i:toDoList) {
             if(i.getTitle().equals(item)){
                 return true;
             }
         }
         return false;
 
-    }
-
-    public void deleteList(){
-        File listFile =  context.getFileStreamPath(this.listName);
-        listFile.delete();
-        // implement deleting list. should probably be moved up level into selectionlist.
     }
 
     /**
@@ -63,6 +57,10 @@ public class ToDoItemList {
     public boolean add(ToDoItem item){
 
         return toDoList.add(item);
+    }
+
+    public void delete(){
+        deleted = true;
     }
 
     public void add(int index, ToDoItem item){
@@ -107,6 +105,7 @@ public class ToDoItemList {
         if ( !this.listName.equals(listName)){
             // rename file because listName has changed. If name same as before, just call regular savelist
             // if new name exists return false and do nothing.
+            Log.d(MainActivity.getTAG(), "saveList: with listname");
             File listFile =  context.getFileStreamPath(this.listName);
             File newListFile = new File(listFile.getParent(), listName);
             if (newListFile.exists()){
@@ -122,6 +121,7 @@ public class ToDoItemList {
 
             // attempt to rename the file
         } else {
+            Log.d(MainActivity.getTAG(), "saveList: else");
             saveList(); // nothing changed in name, proceed as usual.
         }
         return true;
@@ -133,10 +133,13 @@ public class ToDoItemList {
      */
     public boolean saveList(){ // not yet being called, initial implementation
         // create google gson object to convert array list into a JSON string easily.
+        if ( !deleted ) {
 
         Gson gson = new Gson();
 
         // string to hold JSON data.
+
+        Log.d(MainActivity.getTAG(), "saveList: "+listName);
 
         String jsonConvertedArrayList = gson.toJson(toDoList);
 
@@ -158,6 +161,8 @@ public class ToDoItemList {
         } catch (Exception e) {
             e.printStackTrace();
             Log.d(MainActivity.getTAG(), "Exception in file saving");
+
+        }
         }
 
         return false; // file did not save
@@ -175,6 +180,7 @@ public class ToDoItemList {
         saveList();
     }
 
+
     public void removeToDoItem(int index){
         toDoList.remove(index);
     }
@@ -189,6 +195,7 @@ public class ToDoItemList {
 
 
     public ToDoItemList(String listName, Context context){
+        deleted = false;
 
         this.context = context.getApplicationContext();
         this.listName = listName;
@@ -211,16 +218,20 @@ public class ToDoItemList {
 
                 // TypeToken creates a representation of the arraylist of ToDoItem objects
                 // that Gson needs to be able to create the arraylist from the input string.
-                Type listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
+                Type listType;
+                listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
                 Gson gson = new Gson();
                 toDoList = gson.fromJson(fileData, listType);
+
 
       //          Log.d(MainActivity.getTAG(), "Json data: " + fileData);
             }
 
         } catch (Exception e) {
+            Log.e("test3", "File not found: " + e.toString());
             // file read error, file doesn't exist. Create new emptylist
             // populate with dummy values for quick testing purposes.
+
             toDoList = new ArrayList<ToDoItem>();
 // ask eemeli to update todoeditor to use addnewtodoitem rather than directly calling add method.
      /*       addToDoItem(new ToDoItem("Test", "Nothing", false, false));
@@ -241,6 +252,8 @@ public class ToDoItemList {
         }
 
     }
+
+
 
 
 
