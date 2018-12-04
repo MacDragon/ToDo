@@ -1,8 +1,10 @@
 package fi.metropolia.foobar.todo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -220,6 +222,16 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(MainActivity.getTAG(), "onPause: ");
+        SharedPreferences prefPut = getSharedPreferences("Settings", Activity.MODE_PRIVATE); // move tag to mainactivity
+        SharedPreferences.Editor prefEditor = prefPut.edit();
         toDoItemList.saveList();
+        if (!toDoItemList.isDeleted()){
+            prefEditor.putString("lastList", toDoItemList.getListName());
+
+            prefEditor.commit();
+        } else {
+            prefEditor.putString("lastList","");
+        }
     }
+
 }
