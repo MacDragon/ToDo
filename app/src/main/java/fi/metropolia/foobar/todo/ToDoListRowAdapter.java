@@ -20,43 +20,44 @@ package fi.metropolia.foobar.todo;
 */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
-public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
 
-    ToDoItemList toDoList;
+public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.ToDoItemViewHolder> implements ItemTouchHelperAdapter {
 
+    private ToDoItemList toDoList;
     private int textColor;
     private int backGroundColor;
+    private Context context;
+    private int resource;
 
-    /**
-     * As the check box can cause a live change of ToDo status, formatting split into own method to avoid duplication.
-     * @param holder class holding an instance of the current listview's controls
-     */
-    private void setTextFormatting(ViewHolder holder){
-        if ( holder.checkBox.isChecked() ) {
-            holder.textView.setPaintFlags(holder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.textView.setTextColor(Color.LTGRAY);
-        } else {
 
-            holder.textView.setPaintFlags(holder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+    @Override
+    public void onItemDismiss(int position) {
+        toDoList.remove(position);
+        notifyItemRemoved(position);
+    }
 
-            holder.textView.setTextColor(textColor);
-        }
-    };
 
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        ToDoItem item = toDoList.getToDoItem(fromPosition);
+        toDoList.remove(fromPosition);
+        toDoList.add(toPosition, item);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
 
     /**
      * required method in extending ArrayAdapter to work with a dataset
@@ -64,106 +65,9 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
      */
 
     @Override
-    public int getCount() {
-        return toDoList.getToDoListArray().size();
-    }
-
-    /**
-     * required method in extending ArrayAdapter to work with a dataset
-     * @return returns a requested specific object the ArrayAdapter is adapting.
-     */
-
-    @Override
-    public ToDoItem getItem(int position) {
-        return toDoList.getToDoItem(position);
-    }
-
-    /**
-     * Method to create the ListView row item's View data for Android to display.
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
-     */
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-      //  final int index = position; // unneccessary variable
-
-        // viewholder is not allowed to be changed in this context after being first assigned.
-        final ViewHolder holder;
-
-        if (convertView == null) {
-
-            // Inflate layout, creates the View from layout file.
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.todo_item_row_layout, parent, false);
-
-            // Setup ViewHolder pattern, object to hold handles to the view's controls for later manipulation.
-            holder = new ViewHolder();
-            holder.checkBox = (CheckBox) convertView.findViewById(R.id.check_box);
-            holder.textView = (TextView) convertView.findViewById(R.id.text);
-
-            // extract default color for text, as haven't found what resource specifies it. Workaround
-            textColor = holder.textView.getCurrentTextColor();
-
-            // attaches the holder object to the view to enable usage later reusage
-            convertView.setTag(holder);
-
-            //attempting to get backgroundcolor
-            backGroundColor = Color.WHITE;
-         //   backGroundColor = convertView.getBackground();
-
-        } else {
-            // Use cached ViewHolder from the View instead of creating new view to allow us to access controls without using FindViewById
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-
-        // set background color to highlighted is current object is marked to be. This can't be changed in liveview
-        // so doesn't need to be checked in click handler
-        if(toDoList.getToDoItem(position).isHighlight())
-        {
-        // Set a background color for ListView regular row/item
-            convertView.setBackgroundColor(Color.YELLOW);
-        }
-        else
-        {
-        // Set the background color for alternate row/item
-            convertView.setBackgroundColor(backGroundColor);
-        }
-
-        // Get item from data set at the current list position to be used for initial setup and passed into click listener
-        final ToDoItem checkItem = toDoList.getToDoItem(position);//getItem(position);
-
-        if (checkItem != null) {
-            // Set the views to match the item from your data set
-            //          holder.checkBox.setChecked(checkItem.isChecked());
-
-            holder.checkBox.setChecked(checkItem.isDone());
-            Log.d(MainActivity.getTAG(), "getView: checked ");
-            holder.textView.setText(checkItem.getTitle());
-        }
-
-        // set initial text formatting to indicate status of item when view created.
-        setTextFormatting(holder);
-
-        // set up listener on the check box control of the listview row to allow live changing of the data
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // set the actual todolist item to match current done state from checkbox.
-                checkItem.setDone(holder.checkBox.isChecked());
-
-                // update the text formatting of the listrow to match whatever state checkbox changed into
-                setTextFormatting(holder);
-            }
-        });
-
-        // return the converted view to android so it can use it, and cache it to give back to adapter later.
-        return convertView;
+    public int getItemCount() {
+        Log.d(MainActivity.getTAG(), "getItemCount: " + toDoList.size());
+        return toDoList.size();
     }
 
     /**
@@ -172,15 +76,116 @@ public class ToDoListRowAdapter extends ArrayAdapter<ToDoItem> {
      * @param resource
      * @param toDoList the ToDolist to be displayed inside the listview.
      */
-    public ToDoListRowAdapter(Context context, int resource  , ToDoItemList toDoList) {
-            super(context, resource);
-            this.toDoList = toDoList;
+    public ToDoListRowAdapter(Context context, int resource , ToDoItemList toDoList) {
+        Log.d(MainActivity.getTAG(), "ToDoListRowAdapter: ");
+        this.context = context;
+        this.toDoList = toDoList;
+        this.resource = resource;
     }
 
-    // ViewHolder pattern acts as a cache for views inside row view to use for setTag to be able to get back without finding by id, more efficient
-    private class ViewHolder {
-        TextView textView;
-        CheckBox checkBox;
+    @Override
+    public ToDoItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(resource, viewGroup, false);
+
+        // extract default color for text, as haven't found what resource specifies it. Workaround
+
+        Log.d(MainActivity.getTAG(), "creating viewholder item: " + i);
+        return new ToDoItemViewHolder(context, view);
     }
+
+    @Override
+    public void onBindViewHolder(ToDoItemViewHolder holder, int position) {
+        Log.d(MainActivity.getTAG(), "onBindViewHolder: ");
+        final ToDoItem item = toDoList.getToDoItem(position);
+        textColor = holder.textView.getCurrentTextColor();
+        holder.bindToDoItemViewHolder(toDoList, item);
+    }
+
+
+    public class ToDoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final TextView textView;
+        private final CheckBox checkBox;
+        private final View view;
+        private Context context;
+        private ToDoItem item;
+        private ToDoItemList list;
+
+        public View getView() {
+            return view;
+        }
+
+        /**
+         * As the check box can cause a live change of ToDo status, formatting split into own method to avoid duplication.
+         */
+        private void setTextFormatting(){
+            if ( checkBox.isChecked() ) {
+                textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                textView.setTextColor(Color.LTGRAY);
+            } else {
+
+                textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+
+                textView.setTextColor(textColor);
+            }
+        };
+
+
+        public ToDoItemViewHolder(Context context, View view) {
+            super(view);
+            Log.d(MainActivity.getTAG(), "creating holder");
+            this.context = context;
+            checkBox = (CheckBox) view.findViewById(R.id.check_box);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // set the actual todolist item to match current done state from checkbox.
+                item.setDone(checkBox.isChecked());
+                // update the text formatting of the listrow to match whatever state checkbox changed into
+                setTextFormatting();
+
+            }
+        });
+
+            textView = (TextView) view.findViewById(R.id.text);
+            this.view = view;
+            view.setOnClickListener(this);
+        }
+
+        public void bindToDoItemViewHolder(ToDoItemList list, ToDoItem item) {
+            this.item = item;
+            this.list = list;
+            checkBox.setChecked(item.isDone());
+            textView.setText(item.getTitle());
+            backGroundColor = Color.WHITE;
+            if(item.isHighlight())
+            {
+                // Set a background color for ListView regular row/item
+                view.setBackgroundColor(Color.YELLOW);
+            }
+            else
+            {
+                // Set the background color for alternate row/item
+                view.setBackgroundColor(backGroundColor);
+            }
+            setTextFormatting();
+            Log.d(MainActivity.getTAG(), "binding item: " + this.item);
+        }
+
+
+
+        @Override
+        public void onClick(View view) {
+            if (this.item != null) {
+                Log.d(MainActivity.getTAG(), "onClick view: " + this.item);
+                Intent nextActivity = new Intent(view.getContext(), ViewToDoItemActivity.class);
+                // pass viewer the listname and index
+                nextActivity.putExtra("ToDoItemIndex", getAdapterPosition());
+                nextActivity.putExtra("ToDoListName", toDoList.getListName());
+                view.getContext().startActivity(nextActivity);
+            }
+        }
+
+    }
+
 
 }

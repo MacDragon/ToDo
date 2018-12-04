@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
+import android.util.Log;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.EditText;
+
 
 /**
  * Activity to show a todolist called from main selector activity
@@ -20,6 +23,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
     private ToDoItemList toDoItemList;
     private ToDoListRowAdapter adapter;
+    private RecyclerView listView;
 
     // https://developer.android.com/guide/topics/ui/dialogs#CustomLayout how to implement a dialog in android
 
@@ -145,6 +149,8 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(MainActivity.getTAG(), "Entering listview");
+
         // specifity the activities layout file
         setContentView(R.layout.activity_to_do_list);
 
@@ -160,11 +166,20 @@ public class ToDoListActivity extends AppCompatActivity {
 
         // get the actual list object so we can work with it.
         toDoItemList = SelectionList.getInstance().getToDoList(listName);
+        Log.d(MainActivity.getTAG(), "onCreate: " + toDoItemList.getToDoListArray());
 
         // handle to adapter is saved so that we can tell it to update data later from onResume..
         adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList);
+        listView = (RecyclerView)findViewById(R.id.toDoListView);
 
-        final ListView listView = (ListView) findViewById(R.id.toDoListView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(layoutManager);
+
+     //   listView.setHasFixedSize(true);
+
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(adapter, toDoItemList);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(listView);
 
         listView.setAdapter(adapter);
 
@@ -172,7 +187,7 @@ public class ToDoListActivity extends AppCompatActivity {
         /**
          * set up short press detector to launch viewer
          */
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      /*  listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent nextActivity = new Intent(ToDoListActivity.this, ViewToDoItemActivity.class);
@@ -181,13 +196,13 @@ public class ToDoListActivity extends AppCompatActivity {
                 nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
                 startActivity(nextActivity);
             }
-        });
+        }); */
 
         /**
          *  set up long press detector to launch editor
          */
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+     /*   listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
@@ -198,7 +213,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 return true;
             }
 
-        });
+        }); */
 
     }
 
