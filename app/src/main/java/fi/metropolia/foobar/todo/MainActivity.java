@@ -1,8 +1,10 @@
 package fi.metropolia.foobar.todo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -73,6 +75,15 @@ public class MainActivity extends AppCompatActivity{
             //dialog box similar to one
             addListButton(lv);
 
+        }
+
+        SharedPreferences getPref = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        Boolean reopen = getPref.getBoolean("reopenLast", false);
+        String lastList = getPref.getString("lastList", "");
+        if (reopen && (!lastList.isEmpty())) {
+            Intent nextActivity = new Intent(MainActivity.this, ToDoListActivity.class);
+            nextActivity.putExtra("listName", lastList);
+            startActivity(nextActivity);
         }
 
     }
