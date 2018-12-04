@@ -22,7 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends TransitionActivity {
     private Context context;
     private ArrayAdapter<ToDoItemList> arrayAdapter;
 
@@ -198,6 +198,11 @@ public class MainActivity extends AppCompatActivity{
         Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(nextActivity);
 
+    }
+
+    @Override
+    protected void onLeaveActivityAnimation() {
+        // override to prevent animation on closing main activity.
     }
 
 

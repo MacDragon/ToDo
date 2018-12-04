@@ -22,7 +22,7 @@ import android.widget.EditText;
  * Activity to show a todolist called from main selector activity
  */
 
-public class ToDoListActivity extends AppCompatActivity implements DragListener {
+public class ToDoListActivity extends TransitionActivity implements DragListener {
 
     private ToDoItemList toDoItemList;
     private ToDoListRowAdapter adapter;

@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
 
 import java.util.Set;
 
-public class ToDoItemEditorActivity extends AppCompatActivity {
+public class ToDoItemEditorActivity extends TransitionActivity {
     ToDoItem item;
     ToDoItemList list;
     int i;
