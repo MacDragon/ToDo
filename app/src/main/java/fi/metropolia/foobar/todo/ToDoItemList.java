@@ -41,12 +41,6 @@ public class ToDoItemList {
 
     }
 
-    public void deleteList(){
-        File listFile =  context.getFileStreamPath(this.listName);
-        listFile.delete();
-        // implement deleting list. should probably be moved up level into selectionlist.
-    }
-
     /**
      * Adds a new item to stored list.
      * @param toDoItem

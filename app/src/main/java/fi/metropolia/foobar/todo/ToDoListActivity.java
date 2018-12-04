@@ -96,8 +96,10 @@ public class ToDoListActivity extends AppCompatActivity {
         confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                toDoItemList.deleteList();
-                SelectionList.getInstance().getToDoLists().remove(toDoItemList);
+            /*    toDoItemList.deleteList(); */
+                SelectionList.getInstance().deleteList(toDoItemList.getListName());
+
+
                 finish();
             }
         });
