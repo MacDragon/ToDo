@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         SelectionList.createInstance(MainActivity.this);
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
