@@ -36,7 +36,8 @@
         <activity android:name=".ViewToDoItemActivity" android:parentActivityName=".ToDoListActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ToDoListActivity"/>
         </activity>
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".SettingsActivity" android:launchMode="singleTop" android:parentActivityName=".MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
         </activity>
         <activity android:name=".HelpScreenActivity">
         </activity>
