@@ -227,11 +227,11 @@ public class ToDoListActivity extends AppCompatActivity {
         toDoItemList.saveList();
         if (!toDoItemList.isDeleted()){
             prefEditor.putString("lastList", toDoItemList.getListName());
-
-            prefEditor.commit();
         } else {
             prefEditor.putString("lastList","");
         }
+
+        prefEditor.commit();
     }
 
 }
