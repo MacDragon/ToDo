@@ -11,18 +11,19 @@
             android:focusable="false"/>
 
     <TextView
-            android:id="@+id/text"
+            android:id="@+id/rowText"
             android:textSize="20sp"
-            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/check_box"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left"
             android:text="Dummy Text"
-            android:paddingLeft="20pt"
+            android:paddingLeft="8pt"
             android:paddingRight="8pt"/>
     <ImageView
             android:id="@+id/handle"
             android:layout_width="36dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:scaleType="center"
             android:src="@drawable/ic_reorder_black_24dp"

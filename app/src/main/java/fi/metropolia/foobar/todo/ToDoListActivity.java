@@ -1,11 +1,14 @@
 package fi.metropolia.foobar.todo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -19,11 +22,13 @@ import android.widget.EditText;
  * Activity to show a todolist called from main selector activity
  */
 
-public class ToDoListActivity extends AppCompatActivity {
+public class ToDoListActivity extends AppCompatActivity implements DragListener {
 
     private ToDoItemList toDoItemList;
     private ToDoListRowAdapter adapter;
     private RecyclerView listView;
+    private ItemTouchHelper touchHelper;
+
 
     // https://developer.android.com/guide/topics/ui/dialogs#CustomLayout how to implement a dialog in android
 
@@ -169,52 +174,25 @@ public class ToDoListActivity extends AppCompatActivity {
         Log.d(MainActivity.getTAG(), "onCreate: " + toDoItemList.getToDoListArray());
 
         // handle to adapter is saved so that we can tell it to update data later from onResume..
-        adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList);
+        adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, toDoItemList, this);
+
         listView = (RecyclerView)findViewById(R.id.toDoListView);
 
+
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        listView.setItemAnimator(animator);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
         listView.setLayoutManager(layoutManager);
 
      //   listView.setHasFixedSize(true);
 
         ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(adapter, toDoItemList);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(listView);
 
         listView.setAdapter(adapter);
-
-
-        /**
-         * set up short press detector to launch viewer
-         */
-      /*  listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent nextActivity = new Intent(ToDoListActivity.this, ViewToDoItemActivity.class);
-                // pass viewer the listname and index
-                nextActivity.putExtra("ToDoItemIndex", i);
-                nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
-                startActivity(nextActivity);
-            }
-        }); */
-
-        /**
-         *  set up long press detector to launch editor
-         */
-
-     /*   listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
-                // pass editor the listname and index
-                nextActivity.putExtra("ToDoItemIndex", i);
-                nextActivity.putExtra("ToDoListName", toDoItemList.getListName());
-                startActivity(nextActivity);
-                return true;
-            }
-
-        }); */
-
     }
 
     /**
@@ -234,6 +212,22 @@ public class ToDoListActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(MainActivity.getTAG(), "onPause: ");
+        SharedPreferences prefPut = getSharedPreferences("Settings", Activity.MODE_PRIVATE); // move tag to mainactivity
+        SharedPreferences.Editor prefEditor = prefPut.edit();
         toDoItemList.saveList();
+        if (!toDoItemList.isDeleted()){
+            prefEditor.putString("lastList", toDoItemList.getListName());
+        } else {
+            prefEditor.putString("lastList","");
+        }
+
+        prefEditor.commit();
     }
+
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        touchHelper.startDrag(viewHolder);
+    }
+
 }

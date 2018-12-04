@@ -1,9 +1,12 @@
 package fi.metropolia.foobar.todo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 
 //https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.Callback
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
@@ -19,7 +22,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return false; //true;  disable default drag and drop in order to use nicer handles.
     }
 
     @Override
@@ -42,12 +45,32 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if ( direction == 16) {
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+        // swipe towards left to delete
+        if ( direction == ItemTouchHelper.START) {
             // confirm deletion here
-           adapter.onItemDismiss(viewHolder.getAdapterPosition());
-        }
-        else if ( direction == 32 ){
+                AlertDialog.Builder confirmDelete = new AlertDialog.Builder(((ToDoListRowAdapter.ToDoItemViewHolder)viewHolder).getView().getContext());
+                confirmDelete.setTitle("Delete item");
+                confirmDelete.setMessage("Are you sure you want to delete this item?");
+                confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        adapter.onItemDismiss(viewHolder.getAdapterPosition());
+                    }
+                });
+                confirmDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                    }
+
+                    });
+                confirmDelete.show();
+
+                // need to catch cancel and restore item
+
+        }  // swipe to
+        else if ( direction == ItemTouchHelper.END ){
 
             // open editor instead.
             adapter.notifyItemChanged(viewHolder.getAdapterPosition());

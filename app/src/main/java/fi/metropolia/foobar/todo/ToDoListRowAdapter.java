@@ -19,16 +19,20 @@ package fi.metropolia.foobar.todo;
 
 */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -42,13 +46,27 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
     private Context context;
     private int resource;
 
+    private final DragListener dragListener;
 
+    /**
+     * method to facilitate responding to request to remove item from list
+     * @param position position in the list to remove
+     */
     @Override
     public void onItemDismiss(int position) {
         toDoList.remove(position);
         notifyItemRemoved(position);
     }
 
+    // colour definitions for highlight selection to match selector
+    private int[] colorValues = {Color.YELLOW,Color.CYAN,Color.RED};
+
+    /**
+     * method to facilitate moving item  in list in response to drag events.
+     * @param fromPosition original position of item
+     * @param toPosition updated position of item
+     * @return
+     */
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
@@ -76,11 +94,12 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
      * @param resource
      * @param toDoList the ToDolist to be displayed inside the listview.
      */
-    public ToDoListRowAdapter(Context context, int resource , ToDoItemList toDoList) {
+    public ToDoListRowAdapter(Context context, int resource , ToDoItemList toDoList, DragListener dragListener) {
         Log.d(MainActivity.getTAG(), "ToDoListRowAdapter: ");
         this.context = context;
         this.toDoList = toDoList;
         this.resource = resource;
+        this.dragListener = dragListener;
     }
 
     @Override
@@ -95,16 +114,29 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
 
     @Override
     public void onBindViewHolder(ToDoItemViewHolder holder, int position) {
+        final ToDoItemViewHolder internalHolder = holder;
         Log.d(MainActivity.getTAG(), "onBindViewHolder: ");
         final ToDoItem item = toDoList.getToDoItem(position);
-        textColor = holder.textView.getCurrentTextColor();
+        textColor = internalHolder.textView.getCurrentTextColor();
+        internalHolder.dragHandle.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() ==
+                        MotionEvent.ACTION_DOWN) {
+                    dragListener.onStartDrag(internalHolder);
+                }
+                return false;
+            }
+        });
+
         holder.bindToDoItemViewHolder(toDoList, item);
     }
 
 
-    public class ToDoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final CheckBox checkBox;
+        private final ImageView dragHandle;
         private final View view;
         private Context context;
         private ToDoItem item;
@@ -134,6 +166,44 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
             super(view);
             Log.d(MainActivity.getTAG(), "creating holder");
             this.context = context;
+            final Context localContext = context;
+            dragHandle = (ImageView) itemView.findViewById(R.id.handle);
+
+
+            textView = (TextView) view.findViewById(R.id.rowText);
+
+            textView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    //getLayoutPosition();
+                    Intent nextActivity = new Intent(localContext, ToDoItemEditorActivity.class);
+                    // pass editor the listname and index
+                    nextActivity.putExtra("ToDoItemIndex", getAdapterPosition());
+                    nextActivity.putExtra("ToDoListName", toDoList.getListName());
+                    localContext.startActivity(nextActivity);
+
+                    return true;
+                }
+            });
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //getLayoutPosition();
+
+                    Log.d(MainActivity.getTAG(), "onClick view: ");
+                    Intent nextActivity = new Intent(view.getContext(), ViewToDoItemActivity.class);
+                    // pass viewer the listname and index
+                    nextActivity.putExtra("ToDoItemIndex", getAdapterPosition()); // getLayoutPosition()?
+                    nextActivity.putExtra("ToDoListName", toDoList.getListName());
+                    view.getContext().startActivity(nextActivity);
+
+                }
+            });
+
+
+
+
             checkBox = (CheckBox) view.findViewById(R.id.check_box);
             checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,13 +212,12 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
                 item.setDone(checkBox.isChecked());
                 // update the text formatting of the listrow to match whatever state checkbox changed into
                 setTextFormatting();
-
             }
         });
 
-            textView = (TextView) view.findViewById(R.id.text);
+
             this.view = view;
-            view.setOnClickListener(this);
+         //   view.setOnClickListener(this);
         }
 
         public void bindToDoItemViewHolder(ToDoItemList list, ToDoItem item) {
@@ -161,6 +230,9 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
             {
                 // Set a background color for ListView regular row/item
                 view.setBackgroundColor(Color.YELLOW);
+
+                SharedPreferences getPref = context.getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+                view.setBackgroundColor(colorValues[getPref.getInt("selection", 0)]);
             }
             else
             {
@@ -171,9 +243,7 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
             Log.d(MainActivity.getTAG(), "binding item: " + this.item);
         }
 
-
-
-        @Override
+    /*    @Override
         public void onClick(View view) {
             if (this.item != null) {
                 Log.d(MainActivity.getTAG(), "onClick view: " + this.item);
@@ -183,7 +253,7 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoListRowAdapter.
                 nextActivity.putExtra("ToDoListName", toDoList.getListName());
                 view.getContext().startActivity(nextActivity);
             }
-        }
+        } */
 
     }
 
