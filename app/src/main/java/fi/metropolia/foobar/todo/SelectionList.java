@@ -16,14 +16,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 class SelectionList {
-    private static  SelectionList ourInstance;
+    private static SelectionList ourInstance;
     private String filename;
     private ArrayList<ToDoItemList> selectionList;
     private Context context;
     private ArrayList<ToDoItem> toDoList;
-
-
-
 
 
     public static SelectionList getInstance() {
@@ -121,41 +118,40 @@ class SelectionList {
         }*/
 
 
-
     }
 
-    public static void createInstance(Context context){
+    public static void createInstance(Context context) {
         ourInstance = new SelectionList(context);
     }
 
-    public void addToDoList(String name){
+    public void addToDoList(String name) {
         selectionList.add(new ToDoItemList(name, context));
     }
 
-    public ToDoItemList getToDoList(String name){
+    public ToDoItemList getToDoList(String name) {
         //for function to search through the array list to get the right list back.
         // return null if no list found
-        for(ToDoItemList currentList : selectionList){
-            if (currentList.getListName().equals(name)){
+        for (ToDoItemList currentList : selectionList) {
+            if (currentList.getListName().equals(name)) {
                 return currentList;
             }
         }
         return null; //if the method has not return anything already. it will return null.
     }
 
-    public ArrayList<ToDoItemList> getToDoLists(){
+    public ArrayList<ToDoItemList> getToDoLists() {
         //return all lists saved in the selectionList
         return selectionList;
     }
 
-    public ToDoItemList getToDoListByIndex(int i){
+    public ToDoItemList getToDoListByIndex(int i) {
         return selectionList.get(i);
 
     }
 
-    public boolean listExists(String listName){
-        for (ToDoItemList currentList: selectionList){
-            if(currentList.getListName().equals(listName)){
+    public boolean listExists(String listName) {
+        for (ToDoItemList currentList : selectionList) {
+            if (currentList.getListName().equals(listName)) {
                 return true;
             }
 
@@ -164,15 +160,44 @@ class SelectionList {
     }
 
 
-    public void populateSelectionList(){
+    public void populateSelectionList() {
 
         String[] listNames = context.fileList();
 
-        for (String listName: listNames){
+        for (String listName : listNames) {
             selectionList.add(new ToDoItemList(listName, context));
         }
     }
 
+    public boolean isEmpty() {
+        if (this.selectionList.isEmpty()) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 
 
+    public void deleteList(String listName) {
+        this.selectionList.remove(getToDoList(listName));
+        File[] savedFiles;
+
+        savedFiles = context.getFilesDir().listFiles();
+
+        if (savedFiles != null) {
+            Log.d("test2", "file read");
+            for (File file : savedFiles) {
+                // Here is each file
+                if (file.getName() == listName) {
+                    file.delete();
+
+                }
+
+
+            }
+
+
+        }
+    }
 }

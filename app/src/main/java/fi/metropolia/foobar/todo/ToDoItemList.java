@@ -31,8 +31,7 @@ public class ToDoItemList {
     }
 
     public boolean itemExists(String item){
-        for (ToDoItem i:
-                toDoList) {
+        for (ToDoItem i:toDoList) {
             if(i.getTitle().equals(item)){
                 return true;
             }
@@ -152,6 +151,7 @@ public class ToDoItemList {
         } catch (Exception e) {
             e.printStackTrace();
             Log.d(MainActivity.getTAG(), "Exception in file saving");
+
         }
 
         return false; // file did not save
@@ -168,6 +168,7 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
         saveList();
     }
+
 
     public void removeToDoItem(int index){
         toDoList.remove(index);
@@ -205,16 +206,20 @@ public class ToDoItemList {
 
                 // TypeToken creates a representation of the arraylist of ToDoItem objects
                 // that Gson needs to be able to create the arraylist from the input string.
-                Type listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
+                Type listType;
+                listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
                 Gson gson = new Gson();
                 toDoList = gson.fromJson(fileData, listType);
+
 
       //          Log.d(MainActivity.getTAG(), "Json data: " + fileData);
             }
 
         } catch (Exception e) {
+            Log.e("test3", "File not found: " + e.toString());
             // file read error, file doesn't exist. Create new emptylist
             // populate with dummy values for quick testing purposes.
+
             toDoList = new ArrayList<ToDoItem>();
 // ask eemeli to update todoeditor to use addnewtodoitem rather than directly calling add method.
      /*       addToDoItem(new ToDoItem("Test", "Nothing", false, false));
@@ -235,6 +240,8 @@ public class ToDoItemList {
         }
 
     }
+
+
 
 
 
