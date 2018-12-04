@@ -63,6 +63,10 @@ public class ToDoItemList {
         deleted = true;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void add(int index, ToDoItem item){
         toDoList.add(index, item);
     }
