@@ -180,6 +180,7 @@ class SelectionList {
 
 
     public void deleteList(String listName) {
+        getToDoList(listName).delete();
         this.selectionList.remove(getToDoList(listName));
         File[] savedFiles;
 
@@ -189,6 +190,7 @@ class SelectionList {
             Log.d("test2", "file read");
             for (File file : savedFiles) {
                 // Here is each file
+
                 if (file.getName().equals(listName)) {
                     file.delete();
 
