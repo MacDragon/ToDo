@@ -75,7 +75,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
 
     /**
      * Method to add/save the item to the list.
-     * Check if the new title is empty --> open dialog box and don't save.
+     * Check if the new title is empty - open dialog box and don't save.
      */
 
     public void onAddClick(View v) {

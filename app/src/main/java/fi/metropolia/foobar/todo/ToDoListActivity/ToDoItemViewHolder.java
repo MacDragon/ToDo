@@ -134,7 +134,7 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() ==
                         MotionEvent.ACTION_DOWN) {
-                    dragListener.onStartDrag(handle);
+                    dragListener.onStartDrag(handle); // tell the Activity to start drag event.
                 }
                 return false;
             }

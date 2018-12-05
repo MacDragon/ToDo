@@ -30,10 +30,20 @@ import fi.metropolia.foobar.todo.ToDoItemList;
 
 public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder> implements ItemTouchHelperAdapter {
 
+    /**
+     *  store the list this adapter is working with.
+     */
     private ToDoItemList toDoList;
+    /**
+     * stored application context for use with
+     */
     private Context context;
     private int resource;
     private final DragListener dragListener;
+
+    public ToDoItemList getList(){
+        return toDoList;
+    }
 
     /**
      * method to facilitate responding to request to remove item from list
@@ -78,7 +88,7 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
      * @param resource
      * @param toDoList the ToDolist to be displayed inside the listview.
      */
-    public ToDoListRowAdapter(Context context, int resource , ToDoItemList toDoList , DragListener dragListener ) {
+    public ToDoListRowAdapter(Context context, int resource, ToDoItemList toDoList , DragListener dragListener ) {
         Log.d(MainActivity.getTAG(), "ToDoListRowAdapter: ");
         this.context = context;
         this.toDoList = toDoList;
