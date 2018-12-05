@@ -59,8 +59,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
 
         input.setText(toDoItemList.getListName());
-
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(inflatedView);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
