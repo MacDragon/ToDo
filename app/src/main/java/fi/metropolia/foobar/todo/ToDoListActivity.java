@@ -224,7 +224,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         prefEditor.commit();
     }
 
-
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         touchHelper.startDrag(viewHolder);

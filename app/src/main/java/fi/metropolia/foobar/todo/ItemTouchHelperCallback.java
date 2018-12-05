@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
-import android.view.View;
 
 //https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.Callback
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
@@ -49,7 +47,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // swipe towards left to delete
         if ( direction == ItemTouchHelper.START) {
             // confirm deletion here
-                AlertDialog.Builder confirmDelete = new AlertDialog.Builder(((ToDoListRowAdapter.ToDoItemViewHolder)viewHolder).getView().getContext());
+                AlertDialog.Builder confirmDelete = new AlertDialog.Builder(((ToDoItemViewHolder)viewHolder).getView().getContext());
                 confirmDelete.setTitle("Delete item");
                 confirmDelete.setMessage("Are you sure you want to delete this item?");
                 confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -75,11 +73,11 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             // open editor instead.
             adapter.notifyItemChanged(viewHolder.getAdapterPosition());
          //   Log.d(MainActivity.getTAG(), "onLongClick view: " + this.item);
-            Intent nextActivity = new Intent(((ToDoListRowAdapter.ToDoItemViewHolder)viewHolder).getView().getContext(), ToDoItemEditorActivity.class);
+            Intent nextActivity = new Intent(((ToDoItemViewHolder)viewHolder).getView().getContext(), ToDoItemEditorActivity.class);
             // pass editor the listname and index
             nextActivity.putExtra("ToDoItemIndex", viewHolder.getAdapterPosition());
             nextActivity.putExtra("ToDoListName", list.getListName());
-            ((ToDoListRowAdapter.ToDoItemViewHolder)viewHolder).getView().getContext().startActivity(nextActivity);
+            ((ToDoItemViewHolder)viewHolder).getView().getContext().startActivity(nextActivity);
 
         }
     }
