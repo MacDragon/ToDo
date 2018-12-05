@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-class SelectionList {
+public class SelectionList {
     private static SelectionList ourInstance;
     private String filename;
     private ArrayList<ToDoItemList> selectionList;

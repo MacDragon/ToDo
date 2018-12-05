@@ -1,4 +1,4 @@
-package fi.metropolia.foobar.todo;
+package fi.metropolia.foobar.todo.ToDoListActivity;
 
 
 /* ToDoListRowAdapter // create the custom view for ToDoList entries with check box
@@ -24,6 +24,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import fi.metropolia.foobar.todo.MainActivity;
+import fi.metropolia.foobar.todo.ToDoItem;
+import fi.metropolia.foobar.todo.ToDoItemList;
 
 public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder> implements ItemTouchHelperAdapter {
 

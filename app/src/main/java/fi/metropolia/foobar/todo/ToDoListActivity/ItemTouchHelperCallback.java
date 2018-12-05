@@ -1,10 +1,13 @@
-package fi.metropolia.foobar.todo;
+package fi.metropolia.foobar.todo.ToDoListActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import fi.metropolia.foobar.todo.ToDoItem;
+import fi.metropolia.foobar.todo.ToDoItemEditorActivity;
+import fi.metropolia.foobar.todo.ToDoItemList;
 
 //https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.Callback
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {

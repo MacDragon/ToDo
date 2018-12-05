@@ -1,4 +1,4 @@
-package fi.metropolia.foobar.todo;
+package fi.metropolia.foobar.todo.ToDoListActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +15,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
+import fi.metropolia.foobar.todo.*;
 
 
 /**

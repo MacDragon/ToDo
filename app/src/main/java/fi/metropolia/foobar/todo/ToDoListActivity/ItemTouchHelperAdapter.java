@@ -1,4 +1,4 @@
-package fi.metropolia.foobar.todo;
+package fi.metropolia.foobar.todo.ToDoListActivity;
 
 public interface ItemTouchHelperAdapter {
 

@@ -1,4 +1,4 @@
-package fi.metropolia.foobar.todo;
+package fi.metropolia.foobar.todo.ToDoListActivity;
 
 
 import android.app.Activity;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import fi.metropolia.foobar.todo.*;
 
 public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView textView;
@@ -89,8 +90,6 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
         });
 
 
-
-
         checkBox = (CheckBox) view.findViewById(R.id.check_box);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,17 +140,5 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
         });
         Log.d(MainActivity.getTAG(), "binding item: " + this.item);
     }
-
-    /*    @Override
-        public void onClick(View view) {
-            if (this.item != null) {
-                Log.d(MainActivity.getTAG(), "onClick view: " + this.item);
-                Intent nextActivity = new Intent(view.getContext(), ViewToDoItemActivity.class);
-                // pass viewer the listname and index
-                nextActivity.putExtra("ToDoItemIndex", getAdapterPosition());
-                nextActivity.putExtra("ToDoListName", toDoList.getListName());
-                view.getContext().startActivity(nextActivity);
-            }
-        } */
 
 }
