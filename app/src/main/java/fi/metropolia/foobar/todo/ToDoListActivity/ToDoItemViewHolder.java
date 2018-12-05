@@ -28,7 +28,7 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     private int backGroundColor;
 
     // colour definitions for highlight selection to match selector
-    private int[] colorValues = {Color.YELLOW,Color.CYAN,Color.RED};
+    private int[] colorValues = {Color.YELLOW,Color.CYAN,Color.GREEN};
 
 
     public View getView() {
