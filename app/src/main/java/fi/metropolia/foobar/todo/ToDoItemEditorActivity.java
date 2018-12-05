@@ -17,30 +17,32 @@ import org.w3c.dom.Text;
 import java.util.Set;
 
 public class ToDoItemEditorActivity extends TransitionActivity {
-    ToDoItem item;
-    ToDoItemList list;
-    int i;
-    TextView titleView;
-    TextView descView;
-    Switch highlightSwitch;
-    Switch doneSwitch;
-    NumberPicker picker;
-    Button editButton;
-    Button deleteButton;
+    ToDoItem item; // item
+    ToDoItemList list; // list
+    int i; // item index
+    TextView titleView; // title TextView
+    TextView descView; // description TextView
+    Switch highlightSwitch; // highlight Switch
+    Switch doneSwitch; // done Switch
+    NumberPicker picker; // Item position selector
+    Button editButton; // Save button
+    Button deleteButton; // Delete button
 
     /**
-     * Gets the selected list, item and items index.
-     * Checks if user is adding new item or editing old one.
+     * Gets the selected list, item and its index.
+     * Check if user is adding new item or editing one.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_item_editor);
-        //Get the list and selected item
+        //Get the list and selected item from extras
         Bundle extras = getIntent().getExtras();
         String listName = extras.getString("ToDoListName");
         i = extras.getInt("ToDoItemIndex");
         list = SelectionList.getInstance().getToDoList(listName);
+
+        // Specify widgets
         titleView = (TextView)findViewById(R.id.editTitle);
         descView = (TextView)findViewById(R.id.editDesc);
         highlightSwitch = (Switch)findViewById(R.id.highlight);
@@ -49,6 +51,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         editButton = (Button)findViewById(R.id.edit);
         deleteButton = (Button)findViewById(R.id.delete);
         picker.setMinValue(1);
+
         //Check if user is creating a new item
         if (i == -1) {
             deleteButton.setVisibility(View.INVISIBLE); // Hide delete button
@@ -75,11 +78,12 @@ public class ToDoItemEditorActivity extends TransitionActivity {
 
     /**
      * Method to add/save the item to the list.
-     * Check if the new title is empty --> open dialog box and don't save.
+     * Opens dialog box if title is not acceptable
      */
 
     public void onAddClick(View v) {
         if (titleView.getText().toString().isEmpty()) {
+            // If title is empty open a dialog and don't save
             AlertDialog.Builder titleMissing = new AlertDialog.Builder(this); // Creating alertDialog
             titleMissing.setTitle("Title missing!"); // Set alert dialogs title
             titleMissing.setMessage("ToDo item must have a title to be valid."); // Set dialog's message
@@ -92,6 +96,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             titleMissing.show(); //Show dialog box
             Log.d("ToDo", "Failed");
         } else if(list.itemExists(titleView.getText().toString()) && !(item.getTitle().equals(titleView.getText().toString()))) {
+            // If title already exists in this list open a dialog and don't save
             AlertDialog.Builder itemExists = new AlertDialog.Builder(this); // Creating alertDialog
             itemExists.setTitle("Item already exists!"); // Set alert dialogs title
             itemExists.setMessage("This list already contains an item with this name."); // Set dialog's message
@@ -103,11 +108,13 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             });
             itemExists.show(); //Show dialog box
         } else {
+            // If everything is fine, save the changes
             // Set new values to selected item
             item.setTitle(titleView.getText().toString());
             item.setDescription(descView.getText().toString());
             item.setHighlight(highlightSwitch.isChecked());
             item.setDone(doneSwitch.isChecked());
+            // Do this if editing item
             if (i != -1) {
                 list.remove(i);
             }
@@ -126,8 +133,9 @@ public class ToDoItemEditorActivity extends TransitionActivity {
 
     public void deleteItem(View v) {
         AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
-        confirmDelete.setTitle("Delete item");
-        confirmDelete.setMessage("Are you sure you want to delete this item?");
+        confirmDelete.setTitle("Delete item"); // Dialog title
+        confirmDelete.setMessage("Are you sure you want to delete this item?"); // Dialog message
+        //Confirm delete
         confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -135,6 +143,6 @@ public class ToDoItemEditorActivity extends TransitionActivity {
                 finish();
             }
         });
-        confirmDelete.setNegativeButton("Cancel", null).show();
+        confirmDelete.setNegativeButton("Cancel", null).show(); // Cancel delete
     }
 }

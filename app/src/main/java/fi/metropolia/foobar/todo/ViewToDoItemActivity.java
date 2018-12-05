@@ -9,20 +9,23 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 public class ViewToDoItemActivity extends TransitionActivity {
-    ToDoItem item;
-    ToDoItemList list;
-    int i;
+    ToDoItem item; // item
+    ToDoItemList list; // selected list
+    int i; // item index
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_to_do_item);
+        // Get extras
         Bundle extras = getIntent().getExtras();
         String listName = extras.getString("ToDoListName");
         i = extras.getInt("ToDoItemIndex");
         list = SelectionList.getInstance().getToDoList(listName);
         item = list.getToDoItem(i);
 
-        getSupportActionBar().setTitle(item.getTitle());
+        getSupportActionBar().setTitle(item.getTitle()); // Set actionbar title
+
+        //Set item values to widgets
         ((TextView)findViewById(R.id.showDesc)).setText(item.getDescription());
         ((Switch)findViewById(R.id.showHighlight)).setChecked(item.isHighlight());
         ((Switch)findViewById(R.id.showDone)).setChecked(item.isDone());

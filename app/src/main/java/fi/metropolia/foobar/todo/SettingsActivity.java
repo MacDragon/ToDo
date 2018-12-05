@@ -18,7 +18,7 @@ public class SettingsActivity extends TransitionActivity {
     Switch reopenLastSwitch;
 
     /**
-     * Get preferences and set saved values to Switch and Spinner.
+     * Get preferences and set saved values to widgets.
      *
      */
 
@@ -35,22 +35,20 @@ public class SettingsActivity extends TransitionActivity {
         reopenLastSwitch.setChecked(reopenLast); // Set Switch value
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.color_list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        colorSpinner.setAdapter(adapter);
+        colorSpinner.setAdapter(adapter); // Set adapter for the spinner
         colorSpinner.setSelection(selection); // Set Spinner value
     }
 
     /**
-     * Saving preferences after user leaves the activity
+     * Save changes to Preferences
      */
     @Override
     public void onPause() {
-        SharedPreferences prefPut = getSharedPreferences(PREF, Activity.MODE_PRIVATE);
-        SharedPreferences.Editor prefEditor = prefPut.edit();
-        prefEditor.putBoolean("reopenLast", reopenLastSwitch.isChecked());
-        prefEditor.putInt("selection", colorSpinner.getSelectedItemPosition());
-        Log.d("Settings", "Item pos:" + colorSpinner.getSelectedItemPosition());
-        Log.d("Settings", "selection: " + selection);
-        prefEditor.commit();
+        SharedPreferences prefPut = getSharedPreferences(PREF, Activity.MODE_PRIVATE); // Get Settings Preferences
+        SharedPreferences.Editor prefEditor = prefPut.edit(); // Preferences Editor
+        prefEditor.putBoolean("reopenLast", reopenLastSwitch.isChecked()); // Save Switch value
+        prefEditor.putInt("selection", colorSpinner.getSelectedItemPosition()); // Save selected color's index
+        prefEditor.commit(); // Commit changes
 
         super.onPause();
     }
