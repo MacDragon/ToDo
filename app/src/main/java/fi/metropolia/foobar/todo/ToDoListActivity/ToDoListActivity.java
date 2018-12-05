@@ -59,8 +59,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
 
         input.setText(toDoItemList.getListName());
-
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(inflatedView);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -215,7 +213,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         SharedPreferences prefPut = getSharedPreferences("Settings", Activity.MODE_PRIVATE); // move tag to mainactivity
         SharedPreferences.Editor prefEditor = prefPut.edit();
         toDoItemList.saveList();
-        if (!toDoItemList.isDeleted()){
+        if (toDoItemList.listFileExists()){
             prefEditor.putString("lastList", toDoItemList.getListName());
         } else {
             prefEditor.putString("lastList","");

@@ -12,6 +12,7 @@ import fi.metropolia.foobar.todo.ToDoItemList;
 //https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.Callback
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
+    //
     private final ItemTouchHelperAdapter adapter;
     private ToDoItem item;
     private ToDoItemList list;

@@ -19,7 +19,6 @@ public class ToDoItemList {
     private String listName;
     // context needed to be able to get file handle for saving, this is passed on creation.
     private Context context;
-    private boolean deleted;
 
     /**
      * Return this class instances list of todo items, primarily to use for array adapter.
@@ -57,14 +56,6 @@ public class ToDoItemList {
     public boolean add(ToDoItem item){
 
         return toDoList.add(item);
-    }
-
-    public void delete(){
-        deleted = true;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public void add(int index, ToDoItem item){
@@ -105,6 +96,16 @@ public class ToDoItemList {
      * @return
      */
 
+    public boolean listFileExists(){
+        File listFile =  context.getFileStreamPath(this.listName);
+        File newListFile = new File(listFile.getParent(), listName);
+        if (newListFile.exists()){
+            return true;
+        }
+        return false;
+
+    }
+
     public boolean saveList(String listName){
         if ( !this.listName.equals(listName)){
             // rename file because listName has changed. If name same as before, just call regular savelist
@@ -137,7 +138,7 @@ public class ToDoItemList {
      */
     public boolean saveList(){ // not yet being called, initial implementation
         // create google gson object to convert array list into a JSON string easily.
-        if ( !deleted ) {
+        if ( !listFileExists() ) {
 
         Gson gson = new Gson();
 
@@ -152,6 +153,8 @@ public class ToDoItemList {
         // create file streaming object
 
         FileOutputStream outputStream;
+
+
 
         // attempt to write the file to
 
@@ -199,8 +202,6 @@ public class ToDoItemList {
 
 
     public ToDoItemList(String listName, Context context){
-        deleted = false;
-
         this.context = context.getApplicationContext();
         this.listName = listName;
 
@@ -226,7 +227,6 @@ public class ToDoItemList {
                 listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
                 Gson gson = new Gson();
                 toDoList = gson.fromJson(fileData, listType);
-
 
       //          Log.d(MainActivity.getTAG(), "Json data: " + fileData);
             }

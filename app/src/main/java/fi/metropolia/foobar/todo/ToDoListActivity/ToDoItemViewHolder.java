@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -45,7 +46,7 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
         } else {
 
             textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            textView.setTextColor(textColor);
+            textView.setTextColor(ContextCompat.getColor(context, android.R.color.tab_indicator_text));
         }
     };
 
@@ -126,7 +127,7 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
             // Set the background color for alternate row/item
             view.setBackgroundColor(backGroundColor);
         }
-        textColor = textView.getCurrentTextColor();
+     //   textColor = textView.getCurrentTextColor();
         setTextFormatting();
         dragHandle.setOnTouchListener(new View.OnTouchListener() {
             @Override

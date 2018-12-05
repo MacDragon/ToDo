@@ -180,7 +180,6 @@ public class SelectionList {
 
 
     public void deleteList(String listName) {
-        getToDoList(listName).delete();
         this.selectionList.remove(getToDoList(listName));
         File[] savedFiles;
 
