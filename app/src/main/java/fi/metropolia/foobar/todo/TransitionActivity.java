@@ -46,7 +46,7 @@ public abstract class TransitionActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                this.finish();
+                this.finish();  // ensure finish gets called even if use action bar button
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -8,7 +8,7 @@ import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class ViewToDoItemActivity extends AppCompatActivity {
+public class ViewToDoItemActivity extends TransitionActivity {
     ToDoItem item;
     ToDoItemList list;
     int i;
