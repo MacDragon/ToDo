@@ -33,14 +33,25 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
     /**
      *  store the list this adapter is working with.
      */
+
     private ToDoItemList toDoList;
+
     /**
      * stored application context for use with
      */
     private Context context;
+
+    /**
+     * handle to the resource file used for creating view.
+     */
     private int resource;
+
     private final DragListener dragListener;
 
+    /**
+     * returns the RecyclerView's dataset.
+     * @return
+     */
     public ToDoItemList getList(){
         return toDoList;
     }
@@ -61,7 +72,6 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
      * @param toPosition updated position of item
      * @return
      */
-
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         ToDoItem item = toDoList.getToDoItem(fromPosition);
@@ -72,7 +82,7 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
     }
 
     /**
-     * required method in extending ArrayAdapter to work with a dataset
+     * required method in extending ArrayAdapter to return it's working dataset size.
      * @return returns size of the contained ArrayList
      */
 
@@ -83,33 +93,37 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
     }
 
     /**
-     * Constructor for listview row adapter
+     * Constructor for listview row adapter storing all passed parameters for later use.
      * @param context
      * @param resource
      * @param toDoList the ToDolist to be displayed inside the listview.
      */
     public ToDoListRowAdapter(Context context, int resource, ToDoItemList toDoList , DragListener dragListener ) {
-        Log.d(MainActivity.getTAG(), "ToDoListRowAdapter: ");
         this.context = context;
         this.toDoList = toDoList;
         this.resource = resource;
         this.dragListener = dragListener;
     }
 
+    /**
+     * creates view for an item in RecyclerView using ViewHolder
+     * @param viewGroup
+     * @param position
+     * @return
+     */
     @Override
-    public ToDoItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ToDoItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(resource, viewGroup, false);
-
-        // extract default color for text, as haven't found what resource specifies it. Workaround
-
-        Log.d(MainActivity.getTAG(), "creating viewholder item: " + i);
         return new ToDoItemViewHolder(context, view);
     }
 
+    /**
+     * attaches item data from current todolist to a RecyclerView's item viewHolder.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(ToDoItemViewHolder holder, int position) {
-   //     final ToDoItemViewHolder internalHolder = holder;
-        Log.d(MainActivity.getTAG(), "onBindViewHolder: ");
         holder.bindToDoItemViewHolder(toDoList, position, dragListener);
     }
 

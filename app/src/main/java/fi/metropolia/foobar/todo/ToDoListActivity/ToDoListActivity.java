@@ -20,7 +20,6 @@ import fi.metropolia.foobar.todo.*;
  * Activity to show a todolist called from main selector activity
  * extends Transition activity instead of AppcompatActivity to automatically get transition animations defined there
  */
-
 public class ToDoListActivity extends TransitionActivity implements DragListener {
 
     private ToDoItemList list;
@@ -33,7 +32,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     /**
      *  load options menu layout to add rename to actionbar.
      */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -45,7 +43,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      * onClick event for rename menu item, to request changed list name and resave it.
      * @param item
      */
-
     public void listRename(MenuItem item){
         // create dialog to request new listname.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -94,7 +91,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      * method to delete the current active list
      * @param item as this is called from menu the calling item is passed and used for context.
      */
-
     public void listDelete(MenuItem item){
         // create confirmation dialog to ensure list deletion is not a mistake.
         AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
@@ -120,7 +116,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      *
      * @return
      */
-
     public ToDoListRowAdapter getAdapter() {
         return adapter;
     }
@@ -132,7 +127,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      *
      * @param view
      */
-
     public void addClick(View view){
         // create the intent object to call editor activity
         Intent nextActivity = new Intent(ToDoListActivity.this, ToDoItemEditorActivity.class);
@@ -149,8 +143,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      *
      * @param savedInstanceState
      */
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +190,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      *  overridden onReseume to notify RecyclerView to update it's contained data that may have been changed during editing.
      *  Not ideal as always called whether data changed or not, but keeps things simple.
      */
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -208,7 +199,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     /**
      * override default onPause method in order to store current list in preferences and save list data.
      */
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -233,7 +223,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      * method to allow the activity to pass drag event
      * @param viewHolder handle to the current viewHolder storing the RecyclerView's row.
      */
-
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         touchHelper.startDrag(viewHolder);

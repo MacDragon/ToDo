@@ -25,52 +25,58 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     private Context context;
     private ToDoItem item;
     private ToDoItemList list;
-    private int textColor;
-    private int backGroundColor;
 
-    // colour definitions for highlight selection to match selector
-    private int[] colorValues = {Color.YELLOW,Color.CYAN,Color.GREEN};
-
-
+    /**
+     * returns the current viewHolders view handle.
+     * @return
+     */
     public View getView() {
         return view;
     }
 
     /**
-     * As the check box can cause a live change of ToDo status, formatting split into own method to avoid duplication.
+     * As the check box can cause a live change of ToDostatus, formatting split into own method to avoid duplication.
      */
     private void setTextFormatting(){
+        // if checkbox is checked then set the textview to show dimmed struck through text to show status.
         if ( checkBox.isChecked() ) {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             textView.setTextColor(Color.LTGRAY);
-        } else {
-
+        } else { // checkbox not checked, set textformatting to defaults.
             textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             textView.setTextColor(ContextCompat.getColor(context, android.R.color.tab_indicator_text));
         }
-    };
+    }
 
+    /**
+     * constructor for RecyclerView's item ViewHolder, sets up click event listeners and
+     * @param context
+     * @param view
+     */
 
     public ToDoItemViewHolder(Context context, View view) {
         super(view);
-        Log.d(MainActivity.getTAG(), "creating holder");
+
+        // store parameters for later use.
         this.context = context;
+        this.view = view;
+
         final Context localContext = context;
         dragHandle = (ImageView) itemView.findViewById(R.id.handle);
 
 
+        // get handle to view's textview in order to setup clicklisteners for short and long clicks to open viewer
+        // and editor activities.
         textView = (TextView) view.findViewById(R.id.rowText);
 
         textView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                //getLayoutPosition();
                 Intent nextActivity = new Intent(localContext, ToDoItemEditorActivity.class);
                 // pass editor the listname and index
                 nextActivity.putExtra("ToDoItemIndex", getAdapterPosition());
                 nextActivity.putExtra("ToDoListName", list.getListName());
                 localContext.startActivity(nextActivity);
-
                 return true;
             }
         });
@@ -78,19 +84,16 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getLayoutPosition();
-
-                Log.d(MainActivity.getTAG(), "onClick view: ");
                 Intent nextActivity = new Intent(view.getContext(), ViewToDoItemActivity.class);
                 // pass viewer the listname and index
-                nextActivity.putExtra("ToDoItemIndex", getAdapterPosition()); // getLayoutPosition()?
+                nextActivity.putExtra("ToDoItemIndex", getAdapterPosition());
                 nextActivity.putExtra("ToDoListName", list.getListName());
-                view.getContext().startActivity(nextActivity);
+                localContext.startActivity(nextActivity);
 
             }
         });
 
-
+        // get handle to the view's checkbox and add click listener to it to respond and update dataset to changes.
         checkBox = (CheckBox) view.findViewById(R.id.check_box);
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,34 +104,47 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
                 setTextFormatting();
             }
         });
-
-
-        this.view = view;
-        //   view.setOnClickListener(this);
     }
 
-    public void bindToDoItemViewHolder(ToDoItemList list,  int position, final DragListener dragListener) {
+    /**
+     * binds the viewHolder's items to the underlying item data and sets up touch listener events
+     * @param list
+     * @param position
+     * @param dragListener
+     */
+    public void bindToDoItemViewHolder(ToDoItemList list, int position, final DragListener dragListener) {
+        // colour definitions for highlight selection to match selector
+        // should ideally be refined into object with colour names
+        int[] colorValues = {Color.YELLOW,Color.CYAN,Color.GREEN};
+
+        // set our dataset items.
         this.item = list.getToDoItem(position);;
         this.list = list;
+
+        // store handle to this view to pass into drag event handler.
         final ToDoItemViewHolder handle = this;
+
+        // set current content of view items to match data set.
         checkBox.setChecked(item.isDone());
         textView.setText(item.getTitle());
-        backGroundColor = Color.WHITE;
+
+        // set state of view background defined by objects highlight status.
         if(item.isHighlight())
         {
-            // Set a background color for ListView regular row/item
-            view.setBackgroundColor(Color.YELLOW);
-
+            // set the background colour to our selected highlight colour
             SharedPreferences getPref = context.getSharedPreferences("Settings", Activity.MODE_PRIVATE);
             view.setBackgroundColor(colorValues[getPref.getInt("selection", 0)]);
         }
         else
         {
-            // Set the background color for alternate row/item
-            view.setBackgroundColor(backGroundColor);
+            // Set the background color back to white
+            view.setBackgroundColor(ContextCompat.getColor(context, android.R.color.background_light));
         }
-     //   textColor = textView.getCurrentTextColor();
+
+        // set the text formatting to match data state.
         setTextFormatting();
+
+        // define listener for touch events on the view to respond to swipes and drags.
         dragHandle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -139,7 +155,6 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
                 return false;
             }
         });
-        Log.d(MainActivity.getTAG(), "binding item: " + this.item);
     }
 
 }
