@@ -138,7 +138,7 @@ public class ToDoItemList {
      */
     public boolean saveList(){ // not yet being called, initial implementation
         // create google gson object to convert array list into a JSON string easily.
-        if ( !listFileExists() ) {
+        if ( listFileExists() ) {
 
         Gson gson = new Gson();
 
@@ -153,8 +153,6 @@ public class ToDoItemList {
         // create file streaming object
 
         FileOutputStream outputStream;
-
-
 
         // attempt to write the file to
 
@@ -237,6 +235,18 @@ public class ToDoItemList {
             // populate with dummy values for quick testing purposes.
 
             toDoList = new ArrayList<ToDoItem>();
+            FileOutputStream outputStream;
+            // attempt to crate empty file for list
+
+            try {
+                // attempt to open file for writing.
+                outputStream = context.openFileOutput(listName, context.MODE_PRIVATE);
+                // write out the whole string to file, as we have not seeked to end of file this will replace existing contents.
+        //        outputStream.write(.getBytes());
+                outputStream.close();
+            } catch (Exception exeption) {
+                Log.d(MainActivity.getTAG(), "Exception in file saving");
+            }
 // ask eemeli to update todoeditor to use addnewtodoitem rather than directly calling add method.
      /*       addToDoItem(new ToDoItem("Test", "Nothing", false, false));
             addToDoItem(new ToDoItem("Test2", "Nothing", false, false));
