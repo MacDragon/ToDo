@@ -1,5 +1,8 @@
 package fi.metropolia.foobar.todo;
 
+/**
+ * Class to define individual item
+ */
 public class ToDoItem {
     private String title;
     private String description;

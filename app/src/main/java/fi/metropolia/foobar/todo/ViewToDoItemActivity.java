@@ -8,6 +8,9 @@ import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 
+/**
+ * Activity class to view item information
+ */
 public class ViewToDoItemActivity extends TransitionActivity {
     ToDoItem item; // item
     ToDoItemList list; // selected list
