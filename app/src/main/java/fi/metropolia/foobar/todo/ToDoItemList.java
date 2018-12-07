@@ -10,8 +10,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Class to store each ToDo List
+ * Class to store each individual ToDoList by the global singleton, and used by each activity.
  */
+
 public class ToDoItemList {
     // ArrayList of ToDoitems, initialise to blank array at instancing
     private ArrayList<ToDoItem> toDoList;
@@ -90,9 +91,9 @@ public class ToDoItemList {
         return toDoList.get(index);
     }
 
-    /** save list with specific name, which can rename file if new name.
-     *
-     * @param listName
+
+    /**
+     * Check if the list file for this instance exists, so that we can d
      * @return
      */
 
@@ -105,6 +106,12 @@ public class ToDoItemList {
         return false;
 
     }
+
+    /** save list with specific name, which can rename file if new name.
+     *
+     * @param listName
+     * @return
+     */
 
     public boolean saveList(String listName){
         if ( !this.listName.equals(listName)){
@@ -137,49 +144,50 @@ public class ToDoItemList {
      * @return
      */
     public boolean saveList(){ // not yet being called, initial implementation
-        // create google gson object to convert array list into a JSON string easily.
+
+        // only save the list if the file actually exists
+        // if it doesn't, the list has been deleted and no action should be taken.
         if ( listFileExists() ) {
 
-        Gson gson = new Gson();
+            // string to hold JSON data.
 
-        // string to hold JSON data.
+            Log.d(MainActivity.getTAG(), "saveList: " + listName);
 
-        Log.d(MainActivity.getTAG(), "saveList: "+listName);
+            // convert the list data to a Json string using google Gson object
+            String jsonConvertedArrayList = new Gson().toJson(toDoList);
 
-        String jsonConvertedArrayList = gson.toJson(toDoList);
+            // create file streaming object
 
-        Log.d(MainActivity.getTAG(), "Json data: " + jsonConvertedArrayList);
+            FileOutputStream outputStream;
 
-        // create file streaming object
+            // attempt to write the file to
 
-        FileOutputStream outputStream;
-
-        // attempt to write the file to
-
-        try {
-            // attempt to open file for writing.
-            outputStream = context.openFileOutput(listName, context.MODE_PRIVATE);
-            // write out the whole string to file, as we have not seeked to end of file this will replace existing contents.
-            outputStream.write(jsonConvertedArrayList.getBytes());
-            outputStream.close();
-            return true; // file saved successfully
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d(MainActivity.getTAG(), "Exception in file saving");
+            try {
+                // attempt to open file for writing.
+                outputStream = context.openFileOutput(listName, context.MODE_PRIVATE);
+                // write out the whole string to file, as we have not seeked to end of file this will replace existing contents.
+                outputStream.write(jsonConvertedArrayList.getBytes());
+                outputStream.close();
+                return true; // file saved successfully
+            } catch (Exception e) {
+                Log.d(MainActivity.getTAG(), "Exception in file saving" + e.toString());
+                return false;
+            }
 
         }
-        }
-
         return false; // file did not save
     }
 
-
+    /**
+     * provide the lists title as default toString method.
+     * @return returns the lists name.
+     */
     @Override
     public String toString() {
         return listName;
     }
 
-
+/*
     public void addToDoItem(ToDoItem toDoItem){
         toDoList.add(toDoItem);
         saveList();
@@ -189,79 +197,70 @@ public class ToDoItemList {
     public void removeToDoItem(int index){
         toDoList.remove(index);
     }
-
+*/
     /**
-     * Load ( or create if it doesn't already exist ) a new list.
+     * Load ( or create if it doesn't already exist ) a list file.
      * ListName must not be blank.
      *
      * @param listName name for list to load or create, must not be empty.
-     * @param context
+     * @param context pass context into the object in order to allow file access.
      */
 
 
     public ToDoItemList(String listName, Context context){
+        // store the applications context for to use for file access on saving
         this.context = context.getApplicationContext();
         this.listName = listName;
 
         // object to define file
         FileInputStream inputStream;
 
-        try { // attempt to open file, fall back to catch section if there is a read error ( file doesn't exist )
-            inputStream = context.openFileInput(listName);
+        if( listFileExists() ) {
+            // the file already exists, lets load it.
+            try { // attempt to open and read the file.
+                inputStream = context.openFileInput(listName);
 
-            if ( inputStream != null ) { // if we managed to open file try to read it
-                // create input stream reader to convert byte data from file to char data for string
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                // create bufferedreader to read the actual data
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                // read line of data from file, as we are only saving a single string to file, there will only be one line
-                // in a more complex application the whole file would have to be parsed through
-                String fileData = bufferedReader.readLine();
-                inputStream.close();
+                if (inputStream != null) { // if we managed to open file try to read it
+                    // create input stream reader to convert byte data from file to char data for string
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    // create bufferedreader to read the actual data as it has a method to read a whole line at once.
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    // read line of data from file
+                    // as we are only saving a single string to file there will only be one line
+                    // in a more complex application where the user may have loaded the file from external source
+                    // the file the whole file would have to be parsed through
+                    String fileData = bufferedReader.readLine();
+                    // close the file now that reading has been done.
+                    inputStream.close();
+                    // TypeToken creates a representation of the ArrayList of ToDoItem objects
+                    Type listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
+                    // use a Gson object to create the ArrayList from the input string using generated Type definition.
+                    toDoList = new Gson().fromJson(fileData, listType);
 
-                // TypeToken creates a representation of the arraylist of ToDoItem objects
-                // that Gson needs to be able to create the arraylist from the input string.
-                Type listType;
-                listType = new TypeToken<ArrayList<ToDoItem>>() { }.getType();
-                Gson gson = new Gson();
-                toDoList = gson.fromJson(fileData, listType);
+                }
 
-      //          Log.d(MainActivity.getTAG(), "Json data: " + fileData);
+            } catch (Exception e) {
+                Log.e(MainActivity.getTAG(), "Exception reading file: " + e.toString());
+                // file read error, file doesn't exist. Create new emptylist
+                // populate with dummy values for quick testing purposes.
+
             }
 
-        } catch (Exception e) {
-            Log.e("test3", "File not found: " + e.toString());
-            // file read error, file doesn't exist. Create new emptylist
-            // populate with dummy values for quick testing purposes.
+        } else {
+            // file doesn't exist, lets create it and initialise a new blank ToDoList
 
             toDoList = new ArrayList<ToDoItem>();
             FileOutputStream outputStream;
-            // attempt to crate empty file for list
-
+            // attempt to create empty file for list
             try {
-                // attempt to open file for writing.
-                outputStream = context.openFileOutput(listName, context.MODE_PRIVATE);
-                // write out the whole string to file, as we have not seeked to end of file this will replace existing contents.
-        //        outputStream.write(.getBytes());
+                // attempt to open and close file for writing to create it.
+                outputStream = context.openFileOutput(listName, context.MODE_PRIVATE);;
                 outputStream.close();
-            } catch (Exception exeption) {
-                Log.d(MainActivity.getTAG(), "Exception in file saving");
+            } catch (Exception e) {
+                // log error on creating file
+                Log.d(MainActivity.getTAG(), "Exception in file saving" + e.toString());
             }
-// ask eemeli to update todoeditor to use addnewtodoitem rather than directly calling add method.
-     /*       addToDoItem(new ToDoItem("Test", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test2", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test3", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test4", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test5", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test6", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test7", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test8", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test9", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test10", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test11", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test12", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test13", "Nothing", false, false));
-            addToDoItem(new ToDoItem("Test14", "Nothing", false, false));*/
+
 
         }
 
