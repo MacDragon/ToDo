@@ -61,7 +61,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             picker.setMaxValue(list.size() + 1); // Set indexPickers max value to one bigger than list size
             picker.setValue(list.size() +1); // Set selected value to last number
             editButton.setText("Add"); // Change edit button to say "Add"
-            getSupportActionBar().setTitle("Add"); // Set actionbar to "Add"
+            getSupportActionBar().setTitle("Add item"); // Set actionbar to "Add"
         } else {
             //Do this if user is editing item
             item = list.getToDoItem(i); // Get selected item
@@ -120,12 +120,14 @@ public class ToDoItemEditorActivity extends TransitionActivity {
                 list.remove(i);
                 list.add(picker.getValue() - 1, item);
                 finish();
+            // When adding new items add them to the list and reset the views
             } else {
 
+                // Notify user that item has been added to the list
                 Toast toast = Toast.makeText(this, "Item added", Toast.LENGTH_SHORT);
                 toast.show();
                 list.add(picker.getValue() - 1, item); // Move item to right position
-                resetFields();
+                resetViews();
             }
         }
     }
@@ -150,8 +152,12 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         confirmDelete.setNegativeButton("Cancel", null).show(); // Cancel delete
     }
 
-    public void resetFields() {
-        item = new ToDoItem("", "", false);
+    /**
+     * Method to clear views so that multiple items can be added in a row without closing the activity
+     */
+
+    public void resetViews() {
+        item = new ToDoItem("", "", false); // Reset the item variable
         picker.setMaxValue(list.size() + 1); // Set indexPickers max value to one bigger than list size
         picker.setValue(list.size() +1); // Set selected value to last number
         // Set items values to widgets
