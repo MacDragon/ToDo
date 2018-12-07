@@ -19,7 +19,6 @@ public class SettingsActivity extends TransitionActivity {
 
     /**
      * Get preferences and set saved values to widgets.
-     *
      */
 
     @Override
@@ -27,8 +26,10 @@ public class SettingsActivity extends TransitionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         getSupportActionBar().setTitle("Settings"); // Set Actionbar title
-        colorSpinner = (Spinner)findViewById(R.id.colorSpinner);
+        // Get widgets
+        colorSpinner = findViewById(R.id.colorSpinner);
         reopenLastSwitch = findViewById(R.id.settingsSwitch);
+        // Get Settings preferences
         SharedPreferences getPref = getSharedPreferences(PREF, Activity.MODE_PRIVATE);
         reopenLast = getPref.getBoolean("reopenLast", false); // Get Switch value
         selection = getPref.getInt("selection", 0); // Get spinner value
@@ -40,7 +41,7 @@ public class SettingsActivity extends TransitionActivity {
     }
 
     /**
-     * Save changes to Preferences
+     * Override default onPause method to save current settings to preferences
      */
     @Override
     public void onPause() {

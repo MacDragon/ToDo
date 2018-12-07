@@ -32,13 +32,12 @@ public class ViewToDoItemActivity extends TransitionActivity {
     }
 
     /**
-     * When exiting the activity save the changes made
+     * Override onPause to save changes for the selected item
      */
     @Override
     public void onPause() {
         item.setHighlight(((Switch)findViewById(R.id.showHighlight)).isChecked());
         item.setDone(((Switch)findViewById(R.id.showDone)).isChecked());
-        Log.d("ToDo", "finish: test");
         super.onPause();
     }
 }

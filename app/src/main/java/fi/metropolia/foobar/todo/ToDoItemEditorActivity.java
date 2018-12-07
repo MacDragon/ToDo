@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -43,14 +44,14 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         list = SelectionList.getInstance().getToDoList(listName);
 
         // Specify widgets
-        titleView = (TextView)findViewById(R.id.editTitle);
-        descView = (TextView)findViewById(R.id.editDesc);
-        highlightSwitch = (Switch)findViewById(R.id.highlight);
-        doneSwitch = (Switch)findViewById(R.id.done);
-        picker = (NumberPicker)findViewById(R.id.indexPicker);
-        editButton = (Button)findViewById(R.id.edit);
-        deleteButton = (Button)findViewById(R.id.delete);
-        picker.setMinValue(1);
+        titleView = findViewById(R.id.editTitle);
+        descView = findViewById(R.id.editDesc);
+        highlightSwitch = findViewById(R.id.highlight);
+        doneSwitch = findViewById(R.id.done);
+        picker = findViewById(R.id.indexPicker);
+        editButton = findViewById(R.id.edit);
+        deleteButton = findViewById(R.id.delete);
+        picker.setMinValue(1); // Set the lowest value for index picker
 
         //Check if user is creating a new item
         if (i == -1) {
@@ -84,9 +85,9 @@ public class ToDoItemEditorActivity extends TransitionActivity {
     public void onAddClick(View v) {
         if (titleView.getText().toString().isEmpty()) {
             // If title is empty open a dialog and don't save
-            AlertDialog.Builder titleMissing = new AlertDialog.Builder(this); // Creating alertDialog
-            titleMissing.setTitle("Title missing!"); // Set alert dialogs title
-            titleMissing.setMessage("ToDo item must have a title to be valid."); // Set dialog's message
+            AlertDialog.Builder titleMissing = new AlertDialog.Builder(this); // Create dialog
+            titleMissing.setTitle("Title missing!"); // Set dialog title
+            titleMissing.setMessage("ToDo item must have a title to be valid."); // Set dialog message
             // Adding button to dialog box
             titleMissing.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -94,9 +95,9 @@ public class ToDoItemEditorActivity extends TransitionActivity {
                 }
             });
             titleMissing.show(); //Show dialog box
-            Log.d("ToDo", "Failed");
+        // Checks if item with given name already exists in this list and
+        // check if the name wasn't changed
         } else if(list.itemExists(titleView.getText().toString()) && !(item.getTitle().equals(titleView.getText().toString()))) {
-            // If title already exists in this list open a dialog and don't save
             AlertDialog.Builder itemExists = new AlertDialog.Builder(this); // Creating alertDialog
             itemExists.setTitle("Item already exists!"); // Set alert dialogs title
             itemExists.setMessage("This list already contains an item with this name."); // Set dialog's message
@@ -117,12 +118,15 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             // Do this if editing item
             if (i != -1) {
                 list.remove(i);
+                list.add(picker.getValue() - 1, item);
+                finish();
+            } else {
+
+                Toast toast = Toast.makeText(this, "Item added", Toast.LENGTH_SHORT);
+                toast.show();
+                list.add(picker.getValue() - 1, item); // Move item to right position
+                resetFields();
             }
-            list.add(picker.getValue() - 1, item); // Move item to right position
-
-            Log.d("ToDo", item.toString());
-
-            finish(); // End the activity
         }
     }
 
@@ -132,10 +136,10 @@ public class ToDoItemEditorActivity extends TransitionActivity {
      */
 
     public void deleteItem(View v) {
-        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this);
-        confirmDelete.setTitle("Delete item"); // Dialog title
-        confirmDelete.setMessage("Are you sure you want to delete this item?"); // Dialog message
-        //Confirm delete
+        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this); // Create new dialog
+        confirmDelete.setTitle("Delete item"); // Set dialog title
+        confirmDelete.setMessage("Are you sure you want to delete this item?"); // Set dialog message
+        // Create yes and cancel buttons
         confirmDelete.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -144,5 +148,16 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             }
         });
         confirmDelete.setNegativeButton("Cancel", null).show(); // Cancel delete
+    }
+
+    public void resetFields() {
+        item = new ToDoItem("", "", false);
+        picker.setMaxValue(list.size() + 1); // Set indexPickers max value to one bigger than list size
+        picker.setValue(list.size() +1); // Set selected value to last number
+        // Set items values to widgets
+        titleView.setText(item.getTitle());
+        descView.setText(item.getDescription());
+        highlightSwitch.setChecked(item.isHighlight());
+        doneSwitch.setChecked(item.isDone());
     }
 }
