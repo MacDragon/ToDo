@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+/**
+ * Activity class for settings
+ */
 public class SettingsActivity extends TransitionActivity {
     private static final String PREF = "Settings";
     private Boolean reopenLast;

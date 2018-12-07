@@ -17,6 +17,10 @@ import org.w3c.dom.Text;
 
 import java.util.Set;
 
+/**
+ * Activity class for editing and adding new items to a list
+ */
+
 public class ToDoItemEditorActivity extends TransitionActivity {
     ToDoItem item; // item
     ToDoItemList list; // list
