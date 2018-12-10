@@ -19,16 +19,16 @@ import java.util.Set;
  * Activity class for editing and adding new items to a list
  */
 public class ToDoItemEditorActivity extends TransitionActivity {
-    ToDoItem item; // item
-    ToDoItemList list; // list
-    int i; // item index
-    TextView titleView; // title TextView
-    TextView descView; // description TextView
-    Switch highlightSwitch; // highlight Switch
-    Switch doneSwitch; // done Switch
-    NumberPicker picker; // Item position selector
-    Button editButton; // Save button
-    Button deleteButton; // Delete button
+    private ToDoItem item; // item
+    private ToDoItemList list; // list
+    private int i; // item index
+    private TextView titleView; // title TextView
+    private TextView descView; // description TextView
+    private Switch highlightSwitch; // highlight Switch
+    private Switch doneSwitch; // done Switch
+    private NumberPicker picker; // Item position selector
+    private Button editButton; // Save button
+    private Button deleteButton; // Delete button
 
     /**
      * Gets the selected list, item and its index.
