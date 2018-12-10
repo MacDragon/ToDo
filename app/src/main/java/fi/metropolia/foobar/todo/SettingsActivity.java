@@ -17,8 +17,8 @@ public class SettingsActivity extends TransitionActivity {
     private static final String PREF = "Settings";
     private Boolean reopenLast;
     private int selection;
-    Spinner colorSpinner;
-    Switch reopenLastSwitch;
+    private Spinner colorSpinner;
+    private Switch reopenLastSwitch;
 
     /**
      * Get preferences and set saved values to widgets.
