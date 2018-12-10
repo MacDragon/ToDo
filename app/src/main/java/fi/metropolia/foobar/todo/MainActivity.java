@@ -145,6 +145,10 @@ public class MainActivity extends TransitionActivity {
         super.onPause();
     }
 
+    /**
+     * Method invoked when add button on MainActivity is clicked
+     * @param view
+     */
 
 
     public void addListButton (View view){

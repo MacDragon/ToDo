@@ -15,6 +15,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+
+/**
+ * Singleton class to hold all the application's data in a centralized instance. It is populated once the application is started from
+ * internal storage.
+ */
 public class SelectionList {
     private static SelectionList ourInstance;
     private String filename;
@@ -124,10 +129,16 @@ public class SelectionList {
         ourInstance = new SelectionList(context);
     }
 
+    /**
+     * method to add new ToDoList
+     * @param name
+     */
     public void addToDoList(String name) {
         selectionList.add(new ToDoItemList(name, context));
     }
-
+    /*
+    method to search for specific list by its name
+     */
     public ToDoItemList getToDoList(String name) {
         //for function to search through the array list to get the right list back.
         // return null if no list found
@@ -138,16 +149,26 @@ public class SelectionList {
         }
         return null; //if the method has not return anything already. it will return null.
     }
-
+    /**
+    method to return selectionList.
+     */
     public ArrayList<ToDoItemList> getToDoLists() {
         //return all lists saved in the selectionList
         return selectionList;
     }
-
+    /**
+     * get specific list by its index from selectionList
+     */
     public ToDoItemList getToDoListByIndex(int i) {
         return selectionList.get(i);
 
     }
+
+    /**
+     * method to check particular ToDoList exist or not.
+     * @param listName
+     * @return
+     */
 
     public boolean listExists(String listName) {
         for (ToDoItemList currentList : selectionList) {
@@ -160,6 +181,9 @@ public class SelectionList {
     }
 
 
+    /**
+     * method to intialize selectionList by reading file names from the internal storage.
+     */
     public void populateSelectionList() {
 
         String[] listNames = context.fileList();
@@ -169,6 +193,11 @@ public class SelectionList {
         }
     }
 
+
+    /**
+     * method to check if the selectionList is empty or not.
+     * @return
+     */
     public boolean isEmpty() {
         if (this.selectionList.isEmpty()) {
             return true;
@@ -178,6 +207,11 @@ public class SelectionList {
         }
     }
 
+
+    /**
+     * method to delete particular list form SelectionList.
+     * @param listName
+     */
 
     public void deleteList(String listName) {
         this.selectionList.remove(getToDoList(listName));
