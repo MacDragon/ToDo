@@ -50,7 +50,7 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
 
     /**
      * returns the RecyclerView's dataset.
-     * @return
+     * @return the dataarray RecyclerView is adapting.
      */
     public ToDoItemList getList(){
         return toDoList;
@@ -70,7 +70,7 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
      * method to facilitate moving item  in list in response to drag events.
      * @param fromPosition original position of item
      * @param toPosition updated position of item
-     * @return
+     * @return returns whether moving item succeeded.
      */
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
@@ -85,7 +85,6 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
      * required method in extending ArrayAdapter to return it's working dataset size.
      * @return returns size of the contained ArrayList
      */
-
     @Override
     public int getItemCount() {
         Log.d(MainActivity.getTAG(), "getItemCount: " + toDoList.size());
@@ -94,9 +93,10 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
 
     /**
      * Constructor for listview row adapter storing all passed parameters for later use.
-     * @param context
-     * @param resource
+     * @param context context of calling item
+     * @param resource resource id to use in adapter.
      * @param toDoList the ToDolist to be displayed inside the listview.
+     * @param dragListener class implementing dragListener interface to be able to pass touch events
      */
     public ToDoListRowAdapter(Context context, int resource, ToDoItemList toDoList , DragListener dragListener ) {
         this.context = context;
@@ -107,9 +107,9 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
 
     /**
      * creates view for an item in RecyclerView using ViewHolder
-     * @param viewGroup
-     * @param position
-     * @return
+     * @param viewGroup RecyclerView to use.
+     * @param position position of item in RecyclerView
+     * @return returns ViewHolder object for soecified position.
      */
     @Override
     public ToDoItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
@@ -119,8 +119,8 @@ public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder>
 
     /**
      * attaches item data from current todolist to a RecyclerView's item viewHolder.
-     * @param holder
-     * @param position
+     * @param holder ViewHolder object to attach data to
+     * @param position index position of data to attach to view.
      */
     @Override
     public void onBindViewHolder(ToDoItemViewHolder holder, int position) {

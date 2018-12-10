@@ -49,7 +49,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     /**
      * Method to enable Recycler View's default swipe handling.
-     * @returnreturn true to enable default swipe handling.
+     * @return true to enable default swipe handling.
      */
 
     @Override

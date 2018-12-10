@@ -40,7 +40,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
 
     /**
      * onClick event for rename menu item, to request changed list name and resave it.
-     * @param item
+     * @param item calling menu item to satisfy calling style.
      */
     public void listRename(MenuItem item){
         // create dialog to request new listname.
@@ -111,9 +111,9 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     }
 
     /**
-     * Returns the listrow adapter saved earlier so it can be used to request data refresh
+     * Returns the listrow adapter saved earlier so it can be used to request data refresh on resume.
      *
-     * @return
+     * @return returns the handle to RecyclerView's adapter
      */
     public ToDoListRowAdapter getAdapter() {
         return adapter;
@@ -124,7 +124,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
      * Handler to respond to floating addItem button to call edit activity with request to create a new item
      * using -1 as index to indicate that we are not editing existing item.
      *
-     * @param view
+     * @param view calling view to satisfy calling style.
      */
     public void addClick(View view){
         // create the intent object to call editor activity
@@ -140,7 +140,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     /**
      * Setup ToDoList when activity called, using extra info to load the list from global object using list name.
      *
-     * @param savedInstanceState
+     * @param savedInstanceState Previously saved state instance data to restore status.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

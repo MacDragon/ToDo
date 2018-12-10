@@ -13,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
  * Class to store each individual ToDoList by the global singleton, and used by each activity.
  * https://github.com/google/gson/blob/master/UserGuide.md used to aid easily saving and repopulating data from files.
  */
-
 public class ToDoItemList {
     // ArrayList of ToDoitems, initialise to blank array at instancing
     private ArrayList<ToDoItem> toDoList;
@@ -25,16 +24,20 @@ public class ToDoItemList {
     /**
      * Return this class instances list of todo items, primarily to use for array adapter.
      *
-     * @return
+     * @return the todolist for this instance.
      */
-
-   public ArrayList<ToDoItem> getToDoListArray() {
+    public ArrayList<ToDoItem> getToDoListArray() {
         return toDoList;
     }
 
-    public boolean itemExists(String item){
+    /**
+     * returns whether specified item title exists in list.
+     * @param title title of the item to search for
+     * @return returns whether item found
+     */
+    public boolean itemExists(String title){
         for (ToDoItem i:toDoList) {
-            if(i.getTitle().equals(item)){
+            if(i.getTitle().equals(title)){
                 return true;
             }
         }
@@ -43,27 +46,17 @@ public class ToDoItemList {
     }
 
     /**
-     * Adds a new item to stored list.
-     * @param toDoItem
-     */
-
-    public void addItem(ToDoItem toDoItem){
-        toDoList.add(toDoItem);
-    }
-
-    /**
      * returns number of items in list.
-     * @return
+     * @return number of items stored in list.
      */
-
     public int size(){
       return toDoList.size();
     }
 
     /**
      * add a new item object into the list and save the list
-     * @param item
-     * @return
+     * @param item item object to add into list.
+     * @return whether item addition successful
      */
     public boolean add(ToDoItem item){
         boolean temp = toDoList.add(item);
@@ -74,10 +67,9 @@ public class ToDoItemList {
 
     /**
      * add new item object into the list at specific location
-     * @param index
-     * @param item
+     * @param index position index whether to insert item object
+     * @param item object to insert into list.
      */
-
     public void add(int index, ToDoItem item){
         toDoList.add(index, item);
         saveList();
@@ -85,20 +77,18 @@ public class ToDoItemList {
 
     /**
      * remove an item from specified location.
-     * @param index
-     * @return
+     * @param index item index of object to remove from list
+     * @return whether removel successful
      */
-
     public ToDoItem remove(int index){
         return toDoList.remove(index);
     }
 
     /**
      * remove a specified object from the list.
-     * @param item
-     * @return
+     * @param item object to remove from list
+     * @return whether removal successful
      */
-
     public boolean remove(ToDoItem item){
         return toDoList.remove(item);
     }
@@ -106,29 +96,26 @@ public class ToDoItemList {
 
     /**
      * Returns a ToDo Lists name.
-     * @return
+     * @return current lists title.
      */
-
     public String getListName() {
         return listName;
     }
 
     /**
      * Returns an individual item at specified index from ToDo List
-     * @param index
-     * @return
+     * @param index index of ToDoItem object to return.
+     * @return ToDoItem object at list index.
      */
-
     public ToDoItem getToDoItem(int index){
         return toDoList.get(index);
     }
 
 
     /**
-     * Check if the list file for this instance exists, so that we can d
-     * @return
+     * Check if the list file for this instance exists, so that we can detect if list deleted
+     * @return true if file exists, false if doesn't
      */
-
     public boolean listFileExists(){
         File listFile =  context.getFileStreamPath(this.listName);
         File newListFile = new File(listFile.getParent(), listName);
@@ -141,10 +128,9 @@ public class ToDoItemList {
 
     /** save list with specific name, which can rename file if new name.
      *
-     * @param listName
-     * @return
+     * @param listName new name list should be renamed and saved to
+     * @return return if save successful
      */
-
     public boolean saveList(String listName){
         if ( !this.listName.equals(listName)){
             // rename file because listName has changed. If name same as before, just call regular savelist
@@ -173,7 +159,7 @@ public class ToDoItemList {
 
     /**
      * method to save list to storage
-     * @return
+     * @return return if save successful
      */
     public boolean saveList(){ // not yet being called, initial implementation
 
@@ -237,8 +223,6 @@ public class ToDoItemList {
      * @param listName name for list to load or create, must not be empty.
      * @param context pass context into the object in order to allow file access.
      */
-
-
     public ToDoItemList(String listName, Context context){
         // store the applications context for to use for file access on saving
         this.context = context.getApplicationContext();

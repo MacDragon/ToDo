@@ -29,7 +29,7 @@ public abstract class TransitionActivity extends AppCompatActivity {
 
     /**
      * catches starting activity and redefines the animation to display.
-     * @param intent
+     * @param intent intent being passed into activity.
      */
     @Override
     public void startActivity(Intent intent) {
@@ -39,7 +39,8 @@ public abstract class TransitionActivity extends AppCompatActivity {
 
     /**
      * catches leaving activity and redefines the animation to display.
-     * @param intent
+     * @param intent intent being passed into activity.
+     * @param options intent calling options.
      */
 
     @Override

@@ -1,11 +1,8 @@
 package fi.metropolia.foobar.todo;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +18,6 @@ import java.util.Set;
 /**
  * Activity class for editing and adding new items to a list
  */
-
 public class ToDoItemEditorActivity extends TransitionActivity {
     ToDoItem item; // item
     ToDoItemList list; // list
@@ -85,9 +81,10 @@ public class ToDoItemEditorActivity extends TransitionActivity {
     /**
      * Method to add/save the item to the list.
      * Opens dialog box if title is not acceptable
+     *
+     * @param view view of calling item, not needed except to satisfy calling type.
      */
-
-    public void onAddClick(View v) {
+    public void onAddClick(View view) {
         if (titleView.getText().toString().isEmpty()) {
             // If title is empty open a dialog and don't save
             AlertDialog.Builder titleMissing = new AlertDialog.Builder(this); // Create dialog
@@ -141,9 +138,9 @@ public class ToDoItemEditorActivity extends TransitionActivity {
     /**
      * Method to delete an item from a list and asking confirmation from the user.
      *
+     * @param view  view of calling item, not needed except to satisfy calling type.
      */
-
-    public void deleteItem(View v) {
+    public void deleteItem(View view) {
         AlertDialog.Builder confirmDelete = new AlertDialog.Builder(this); // Create new dialog
         confirmDelete.setTitle("Delete item"); // Set dialog title
         confirmDelete.setMessage("Are you sure you want to delete this item?"); // Set dialog message
@@ -161,7 +158,6 @@ public class ToDoItemEditorActivity extends TransitionActivity {
     /**
      * Method to clear views so that multiple items can be added in a row without closing the activity
      */
-
     public void resetViews() {
         item = new ToDoItem("", "", false); // Reset the item variable
         picker.setMaxValue(list.size() + 1); // Set indexPickers max value to one bigger than list size

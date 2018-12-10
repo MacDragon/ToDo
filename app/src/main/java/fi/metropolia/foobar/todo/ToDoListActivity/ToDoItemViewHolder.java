@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import fi.metropolia.foobar.todo.*;
 
+
+/**
+ * ViewHolder class object to store the active state of a Recycler View row.
+ */
 public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView textView;
     private final CheckBox checkBox;
@@ -27,7 +31,7 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * returns the current viewHolders view handle.
-     * @return
+     * @return returns the current ViewHolders actual view handle, in order to set background data.
      */
     public View getView() {
         return view;
@@ -49,10 +53,9 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * constructor for RecyclerView's item ViewHolder, sets up click event listeners and
-     * @param context
-     * @param view
+     * @param context context of caller
+     * @param view callers view
      */
-
     public ToDoItemViewHolder(Context context, View view) {
         super(view);
 
@@ -107,9 +110,9 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * binds the viewHolder's items to the underlying item data and sets up touch listener events
-     * @param list
-     * @param position
-     * @param dragListener
+     * @param list list from which to bind item data
+     * @param position position in list of data to bind
+     * @param dragListener handle to class dealing with touch event data
      */
     public void bindToDoItemViewHolder(ToDoItemList list, int position, final DragListener dragListener) {
         // colour definitions for highlight selection to match selector
