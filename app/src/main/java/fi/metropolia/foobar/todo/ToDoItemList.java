@@ -50,22 +50,50 @@ public class ToDoItemList {
         toDoList.add(toDoItem);
     }
 
+    /**
+     * returns number of items in list.
+     * @return
+     */
+
     public int size(){
       return toDoList.size();
     }
 
+    /**
+     * add a new item object into the list
+     * @param item
+     * @return
+     */
     public boolean add(ToDoItem item){
 
         return toDoList.add(item);
     }
 
+    /**
+     * add new item object into the list at specific location
+     * @param index
+     * @param item
+     */
+
     public void add(int index, ToDoItem item){
         toDoList.add(index, item);
     }
 
+    /**
+     * remove an item from specified location.
+     * @param index
+     * @return
+     */
+
     public ToDoItem remove(int index){
         return toDoList.remove(index);
     }
+
+    /**
+     * remove a specified object from the list.
+     * @param item
+     * @return
+     */
 
     public boolean remove(ToDoItem item){
         return toDoList.remove(item);

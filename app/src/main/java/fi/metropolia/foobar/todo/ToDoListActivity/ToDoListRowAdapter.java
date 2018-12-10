@@ -16,7 +16,7 @@ package fi.metropolia.foobar.todo.ToDoListActivity;
         }
 
         }
-
+inspiration from https://traversoft.com/2016/01/31/replace-listview-with-recyclerview/
 */
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

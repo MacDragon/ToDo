@@ -8,34 +8,39 @@ import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 
+/**
+ * Activity class to view item information
+ */
 public class ViewToDoItemActivity extends TransitionActivity {
-    ToDoItem item;
-    ToDoItemList list;
-    int i;
+    ToDoItem item; // item
+    ToDoItemList list; // selected list
+    int i; // item index
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_to_do_item);
+        // Get extras
         Bundle extras = getIntent().getExtras();
         String listName = extras.getString("ToDoListName");
         i = extras.getInt("ToDoItemIndex");
         list = SelectionList.getInstance().getToDoList(listName);
         item = list.getToDoItem(i);
 
-        getSupportActionBar().setTitle(item.getTitle());
+        getSupportActionBar().setTitle(item.getTitle()); // Set actionbar title
+
+        //Set item values to widgets
         ((TextView)findViewById(R.id.showDesc)).setText(item.getDescription());
         ((Switch)findViewById(R.id.showHighlight)).setChecked(item.isHighlight());
         ((Switch)findViewById(R.id.showDone)).setChecked(item.isDone());
     }
 
     /**
-     * When exiting the activity save the changes made
+     * Override onPause to save changes for the selected item
      */
     @Override
     public void onPause() {
         item.setHighlight(((Switch)findViewById(R.id.showHighlight)).isChecked());
         item.setDone(((Switch)findViewById(R.id.showDone)).isChecked());
-        Log.d("ToDo", "finish: test");
         super.onPause();
     }
 }

@@ -11,7 +11,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import fi.metropolia.foobar.todo.*;
@@ -160,7 +159,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
 
         // get the actual list object so we can work with it.
         list = SelectionList.getInstance().getToDoList(listName);
-        Log.d(MainActivity.getTAG(), "onCreate: " + list.getToDoListArray());
 
         // handle to adapter is saved so that we can tell it to update data later from onResume..
         adapter = new ToDoListRowAdapter(this, R.layout.todo_item_row_layout, list, this);
@@ -184,6 +182,9 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
 
         // finally setup the RecyclerView's adapter so it knows what to display.
         listView.setAdapter(adapter);
+        if ( list.size() == 0 ) {
+            addClick(listView);
+        }
     }
 
     /**
