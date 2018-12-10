@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Class to store each individual ToDoList by the global singleton, and used by each activity.
+ * https://github.com/google/gson/blob/master/UserGuide.md used to aid easily saving and repopulating data from files.
  */
 
 public class ToDoItemList {

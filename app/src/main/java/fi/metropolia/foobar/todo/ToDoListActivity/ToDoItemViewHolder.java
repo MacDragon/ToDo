@@ -125,7 +125,12 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
 
         // set current content of view items to match data set.
         checkBox.setChecked(item.isDone());
-        textView.setText(item.getTitle());
+
+
+        String rowText = item.getTitle();
+        if ( !item.getDescription().isEmpty()) { rowText = rowText + " ..."; }
+
+        textView.setText(rowText);
 
         // set state of view background defined by objects highlight status.
         if(item.isHighlight())
