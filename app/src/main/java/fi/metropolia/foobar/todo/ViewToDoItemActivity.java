@@ -12,9 +12,10 @@ import android.widget.TextView;
  * Activity class to view item information
  */
 public class ViewToDoItemActivity extends TransitionActivity {
-    ToDoItem item; // item
-    ToDoItemList list; // selected list
-    int i; // item index
+    private ToDoItem item; // item
+    private ToDoItemList list; // selected list
+    private int i; // item index
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
