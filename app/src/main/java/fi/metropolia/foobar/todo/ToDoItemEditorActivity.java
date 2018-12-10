@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -129,6 +130,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
 
                 // Notify user that item has been added to the list
                 Toast toast = Toast.makeText(this, "Item added", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER_VERTICAL,0,0);
                 toast.show();
                 list.add(picker.getValue() - 1, item); // Move item to right position
                 resetViews();

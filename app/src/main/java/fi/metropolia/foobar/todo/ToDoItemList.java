@@ -61,13 +61,15 @@ public class ToDoItemList {
     }
 
     /**
-     * add a new item object into the list
+     * add a new item object into the list and save the list
      * @param item
      * @return
      */
     public boolean add(ToDoItem item){
+        boolean temp = toDoList.add(item);
+        saveList();
+        return temp;
 
-        return toDoList.add(item);
     }
 
     /**
@@ -78,6 +80,7 @@ public class ToDoItemList {
 
     public void add(int index, ToDoItem item){
         toDoList.add(index, item);
+        saveList();
     }
 
     /**
