@@ -18,6 +18,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import fi.metropolia.foobar.todo.ToDoListActivity.ToDoListActivity;
 
+/**
+ * Class to start app when its started. It reads the file names from internal storage
+ * and display them using listView.
+ *
+ */
+
 public class MainActivity extends TransitionActivity {
     private Context context;
     private ArrayAdapter<ToDoItemList> arrayAdapter;
@@ -68,7 +74,12 @@ public class MainActivity extends TransitionActivity {
 
 
         if(SelectionList.getInstance().isEmpty()){
-            //dialog box similar to one
+            /**
+             * if there are no files in internal storage invoking addListButton to ask user to
+             * create a new list.
+             */
+
+
             addListButton(lv);
 
         }
@@ -177,6 +188,13 @@ public class MainActivity extends TransitionActivity {
 
     }
 
+    /**
+     *
+     * @param title (to be displayed on alertDialog)
+     * @param message (message to be displayed)
+     *
+     *  Method to display error dialog box to display some title with some message.
+     */
     private void displayErrorDialog(String title, String message){
         AlertDialog.Builder missingTitle = new AlertDialog.Builder(context);
         missingTitle.setTitle(title);
@@ -189,6 +207,11 @@ public class MainActivity extends TransitionActivity {
         });
         missingTitle.show();
     }
+
+    /**
+     * open preference activity from settings menu.
+     * @param item
+     */
 
     public void preferenceClick(MenuItem item){
         Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
