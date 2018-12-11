@@ -73,16 +73,9 @@ public class MainActivity extends TransitionActivity {
         });
 
 
-        if(SelectionList.getInstance().isEmpty()){
-            /**
-             * if there are no files in internal storage invoking addListButton to ask user to
-             * create a new list.
-             */
 
 
-            addListButton(lv);
 
-        }
 
         SharedPreferences getPref = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
         Boolean reopen = getPref.getBoolean("reopenLast", false);
