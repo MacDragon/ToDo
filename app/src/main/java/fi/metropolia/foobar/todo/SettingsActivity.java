@@ -2,10 +2,7 @@ package fi.metropolia.foobar.todo;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
