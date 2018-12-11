@@ -181,4 +181,14 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
+    public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        closeKeyboard();
+    }
 }
