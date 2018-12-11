@@ -167,5 +167,6 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         descView.setText(item.getDescription());
         highlightSwitch.setChecked(item.isHighlight());
         doneSwitch.setChecked(item.isDone());
+        titleView.requestFocus();
     }
 }
