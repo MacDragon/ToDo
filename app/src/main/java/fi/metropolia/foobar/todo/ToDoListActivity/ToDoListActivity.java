@@ -56,6 +56,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
 
         // link edittext to local object to manipulate string from it.
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
+        input.requestFocus();
         // set dialogs EditText to current list name.
         input.setText(list.getListName());
         builder.setView(inflatedView);
