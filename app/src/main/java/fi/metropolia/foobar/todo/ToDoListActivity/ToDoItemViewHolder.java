@@ -39,7 +39,9 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * As the check box can cause a live change of ToDostatus, formatting split into own method to avoid duplication.
+     * method to set text formatting of TextView in RecyclerView row.
+     * As the check box can cause a live change of ToDostatus
+     * text formatting split into own method to avoid code duplication.
      */
     private void setTextFormatting(){
         // if checkbox is checked then set the textview to show dimmed struck through text to show status.
@@ -53,7 +55,9 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * constructor for RecyclerView's item ViewHolder, sets up click event listeners and
+     * constructor for RecyclerView's item ViewHolder, sets up click event listeners on checkbox and textview
+     * to allow item updating/editing/viewing by interacting with widgets.
+     *
      * @param context context of caller
      * @param view callers view
      */
@@ -110,7 +114,8 @@ public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * binds the viewHolder's items to the underlying item data and sets up touch listener events
+     * Attaches ( binds ) information from underlying data to the viewHolder's widgets and sets up touch listener
+     * event on object passed in from Activity.
      * @param list list from which to bind item data
      * @param position position in list of data to bind
      * @param dragListener handle to class dealing with touch event data
