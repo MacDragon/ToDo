@@ -65,7 +65,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             picker.setValue(list.size() +1); // Set selected value to last number
             editButton.setText("Add"); // Change edit button to say "Add"
             getSupportActionBar().setTitle("Add item"); // Set actionbar to "Add"
-            showKeyboard();
+      //      showKeyboard();
         } else {
             //Do this if user is editing item
             item = list.getToDoItem(i); // Get selected item
@@ -174,21 +174,9 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         titleView.requestFocus();
     }
 
-    // code from https://stackoverflow.com/questions/5105354/how-to-show-soft-keyboard-when-edittext-is-focused to show/hide keyboard.
-
-    public void showKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    public void closeKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
-
     @Override
     public void finish() {
         super.finish();
-        closeKeyboard();
+        //closeKeyboard();
     }
 }

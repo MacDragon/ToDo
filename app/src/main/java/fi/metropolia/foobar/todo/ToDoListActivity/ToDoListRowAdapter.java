@@ -1,23 +1,9 @@
 package fi.metropolia.foobar.todo.ToDoListActivity;
 
 
-/* ToDoListRowAdapter // create the custom view for ToDoList entries with check box
-        {
-        setTextColorByChecked(ViewHolder holder)
-        ToDoListRowAdapter(Context context, int resource, ArrayList<ToDoItem> ToDoList)
-        getView(int position, View convertView, ViewGroup parent)
-        getItemId(int position)
-        getItem(int position) ToDoItem
-        getCount
 
-        VisaHolder {
-        TextView textView
-        CheckBox checkBox
-        }
 
-        }
-inspiration from https://traversoft.com/2016/01/31/replace-listview-with-recyclerview/
-*/
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +13,11 @@ import android.view.ViewGroup;
 import fi.metropolia.foobar.todo.MainActivity;
 import fi.metropolia.foobar.todo.ToDoItem;
 import fi.metropolia.foobar.todo.ToDoItemList;
+
+/**
+ * Class to implement RecyclerView displaying for ToDoListActivity.
+ *
+ */
 
 public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder> implements ItemTouchHelperAdapter {
 

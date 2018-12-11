@@ -39,19 +39,6 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         return true;
     }
 
-    // code from https://stackoverflow.com/questions/5105354/how-to-show-soft-keyboard-when-edittext-is-focused to show/hide keyboard.
-
-    public void showKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    public void closeKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
-
-
     /**
      * onClick event for rename menu item, to request changed list name and resave it.
      * @param item calling menu item to satisfy calling style.
@@ -72,7 +59,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
         input.requestFocus();
 
-        showKeyboard();
+ //      showKeyboard();
 
         // set dialogs EditText to current list name.
         input.setText(list.getListName());
@@ -83,7 +70,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
             public void onClick(DialogInterface dialog, int which) {
                 // try to rename list
                  if (!list.saveList( input.getText().toString())){
-                     closeKeyboard();
+   //                  closeKeyboard();
                      // saving to new name failed, assume because file exists, give error.
                      AlertDialog.Builder titleMissing = new AlertDialog.Builder(renameContext);
                      titleMissing.setTitle("Rename failed");
@@ -96,12 +83,19 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
                  } else { // renaming list succeeded
                      // set the actionBar's title to the newly renamed list title.
                      getSupportActionBar().setTitle(list.getListName());
-                     closeKeyboard();
+                     // closeKeyboard();
                  }
             }
         });
+
         // negative button doesn't need to do anything, dialog closes automatically.
-        builder.setNegativeButton("Cancel", null );
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+    //            closeKeyboard();
+                dialog.cancel();
+            }
+        });
         builder.show();
 
     }
@@ -196,8 +190,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         listView.setHasFixedSize(true);
 
         // setup the touch responder for drag/swipe events in the RecyclerView.
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(adapter, list);
-        touchHelper = new ItemTouchHelper(callback);
+        touchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter, list));
         touchHelper.attachToRecyclerView(listView);
 
         // finally setup the RecyclerView's adapter so it knows what to display.
@@ -208,13 +201,12 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     }
 
     /**
-     *  overridden onReseume to notify RecyclerView to update it's contained data that may have been changed during editing.
+     *  overridden onResume to notify RecyclerView to update it's contained data that may have been changed during editing.
      *  Not ideal as always called whether data changed or not, but keeps things simple.
      */
     @Override
     protected void onResume() {
         super.onResume();
-        closeKeyboard();
         getAdapter().notifyDataSetChanged(); // doesn't seem to be needed now launchmode singletop
     }
 
@@ -242,7 +234,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     }
 
     /**
-     * method to allow the activity to pass drag event
+     * method to allow the activity to pass drag event back from recycle view into touch helper as a callback.
      * @param viewHolder handle to the current viewHolder storing the RecyclerView's row.
      */
     @Override

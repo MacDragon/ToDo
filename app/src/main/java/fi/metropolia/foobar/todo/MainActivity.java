@@ -152,7 +152,7 @@ public class MainActivity extends TransitionActivity {
         final View inflatedView = view.inflate(this, R.layout.dialog_rename_list, null);
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
         input.requestFocus();
-        showKeyboard();
+       // showKeyboard();
         input.setHint("List Name To Add");
         builder.setView(inflatedView);
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -160,13 +160,13 @@ public class MainActivity extends TransitionActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 if (input.getText().toString().equals("")){
-                    closeKeyboard();
+                 //   closeKeyboard();
                     //implement validation error dialog
                     displayErrorDialog("Cannot Create List", "List Must have a name");
 
                 }else{
                     if(SelectionList.getInstance().listExists(input.getText().toString())){
-                        closeKeyboard();
+                   //     closeKeyboard();
                         displayErrorDialog("Cannot Create List", "List already exists");
                     }else{
                         SelectionList.getInstance().addToDoList(input.getText().toString());
@@ -181,7 +181,7 @@ public class MainActivity extends TransitionActivity {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                closeKeyboard();
+                //closeKeyboard();
                 dialog.cancel();
             }
         });
@@ -226,18 +226,6 @@ public class MainActivity extends TransitionActivity {
     @Override
     protected void onLeaveActivityAnimation() {
         // override to prevent animation on closing main activity.
-    }
-
-    // code from https://stackoverflow.com/questions/5105354/how-to-show-soft-keyboard-when-edittext-is-focused to show/hide keyboard.
-
-    public void showKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    public void closeKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
 

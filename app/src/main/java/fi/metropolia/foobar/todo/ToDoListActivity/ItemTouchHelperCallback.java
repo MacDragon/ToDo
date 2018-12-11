@@ -9,11 +9,6 @@ import fi.metropolia.foobar.todo.ToDoItemEditorActivity;
 import fi.metropolia.foobar.todo.ToDoItemList;
 
 
-// drag and drop implemented with help from
-// https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.Callback
-// https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-b9456d2b1aaf
-// https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
-
 /**
  * helper callback class to implement touch event handling for Recycler View.
  */

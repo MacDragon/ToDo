@@ -2,13 +2,14 @@ package fi.metropolia.foobar.todo.ToDoListActivity;
 
 
 /**
- *  interface to define methods needed for touch interaction with Recycle View
+ *  interface to define methods needed for touch interaction events to be responded to with RecyclerView
  */
 
 public interface ItemTouchHelperAdapter {
 
     /**
-     * defines method to handle moving item to different location in Recycle View
+     * defines method to handle moving item to different location in Recycle View on drag events
+     * when item has moved over to a new row.
      * @param fromPosition initial index position of item
      * @param toPosition new index position of item
      * @return return success
