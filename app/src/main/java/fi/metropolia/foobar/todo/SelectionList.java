@@ -14,6 +14,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 
 /**
@@ -187,6 +190,7 @@ public class SelectionList {
     public void populateSelectionList() {
 
         String[] listNames = context.fileList();
+        Arrays.sort(listNames);
 
         for (String listName : listNames) {
             selectionList.add(new ToDoItemList(listName, context));
