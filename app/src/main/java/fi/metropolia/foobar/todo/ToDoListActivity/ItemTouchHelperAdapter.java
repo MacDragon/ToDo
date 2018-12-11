@@ -3,6 +3,7 @@ package fi.metropolia.foobar.todo.ToDoListActivity;
 
 /**
  *  interface to define methods needed for touch interaction events to be responded to with RecyclerView
+ *  See package-info.java for further credit in implementation
  */
 
 public interface ItemTouchHelperAdapter {

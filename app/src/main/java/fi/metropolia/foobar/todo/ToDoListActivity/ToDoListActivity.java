@@ -19,6 +19,7 @@ import fi.metropolia.foobar.todo.*;
 /**
  * Activity to show a todolist called from main selector activity
  * extends Transition activity instead of AppcompatActivity to automatically get transition animations defined there
+ * See package-info.java for further credit in implementation
  */
 public class ToDoListActivity extends TransitionActivity implements DragListener {
 

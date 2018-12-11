@@ -16,9 +16,9 @@ import fi.metropolia.foobar.todo.ToDoItemList;
 
 /**
  * Class to implement RecyclerView displaying for ToDoListActivity.
+ * See package-info.java for further credit in implementation
  *
  */
-
 public class ToDoListRowAdapter extends RecyclerView.Adapter<ToDoItemViewHolder> implements ItemTouchHelperAdapter {
 
     /**

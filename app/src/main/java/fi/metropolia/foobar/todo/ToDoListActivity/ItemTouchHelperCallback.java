@@ -11,6 +11,7 @@ import fi.metropolia.foobar.todo.ToDoItemList;
 
 /**
  * helper callback class to implement touch event handling for Recycler View.
+ * See package-info.java for further credit in implementation
  */
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {

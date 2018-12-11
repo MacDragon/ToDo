@@ -19,6 +19,7 @@ import fi.metropolia.foobar.todo.*;
 
 /**
  * ViewHolder class object to store the active state of a Recycler View row.
+ * See package-info.java for further credit in implementation
  */
 public class ToDoItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView textView;
