@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import fi.metropolia.foobar.todo.*;
 
@@ -38,6 +39,19 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         return true;
     }
 
+    // code from https://stackoverflow.com/questions/5105354/how-to-show-soft-keyboard-when-edittext-is-focused to show/hide keyboard.
+
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+
     /**
      * onClick event for rename menu item, to request changed list name and resave it.
      * @param item calling menu item to satisfy calling style.
@@ -57,6 +71,9 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
         // link edittext to local object to manipulate string from it.
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
         input.requestFocus();
+
+        showKeyboard();
+
         // set dialogs EditText to current list name.
         input.setText(list.getListName());
         builder.setView(inflatedView);
@@ -66,6 +83,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
             public void onClick(DialogInterface dialog, int which) {
                 // try to rename list
                  if (!list.saveList( input.getText().toString())){
+                     closeKeyboard();
                      // saving to new name failed, assume because file exists, give error.
                      AlertDialog.Builder titleMissing = new AlertDialog.Builder(renameContext);
                      titleMissing.setTitle("Rename failed");
@@ -78,6 +96,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
                  } else { // renaming list succeeded
                      // set the actionBar's title to the newly renamed list title.
                      getSupportActionBar().setTitle(list.getListName());
+                     closeKeyboard();
                  }
             }
         });
