@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.*;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import fi.metropolia.foobar.todo.*;
 
