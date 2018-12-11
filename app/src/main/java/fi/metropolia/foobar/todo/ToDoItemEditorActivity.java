@@ -1,10 +1,12 @@
 package fi.metropolia.foobar.todo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Switch;
@@ -63,6 +65,7 @@ public class ToDoItemEditorActivity extends TransitionActivity {
             picker.setValue(list.size() +1); // Set selected value to last number
             editButton.setText("Add"); // Change edit button to say "Add"
             getSupportActionBar().setTitle("Add item"); // Set actionbar to "Add"
+            showKeyboard();
         } else {
             //Do this if user is editing item
             item = list.getToDoItem(i); // Get selected item
@@ -170,4 +173,12 @@ public class ToDoItemEditorActivity extends TransitionActivity {
         doneSwitch.setChecked(item.isDone());
         titleView.requestFocus();
     }
+
+    // code from https://stackoverflow.com/questions/5105354/how-to-show-soft-keyboard-when-edittext-is-focused to show/hide keyboard.
+
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
 }
