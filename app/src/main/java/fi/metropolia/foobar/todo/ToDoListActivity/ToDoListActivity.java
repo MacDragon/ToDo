@@ -214,6 +214,7 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
     @Override
     protected void onResume() {
         super.onResume();
+        closeKeyboard();
         getAdapter().notifyDataSetChanged(); // doesn't seem to be needed now launchmode singletop
     }
 
