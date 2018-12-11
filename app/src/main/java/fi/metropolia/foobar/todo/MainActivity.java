@@ -150,6 +150,7 @@ public class MainActivity extends TransitionActivity {
         builder.setTitle("Add List");
         final View inflatedView = view.inflate(this, R.layout.dialog_rename_list, null);
         final EditText input = (EditText) inflatedView.findViewById(R.id.listName);
+        input.requestFocus();
         input.setHint("List Name To Add");
         builder.setView(inflatedView);
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
