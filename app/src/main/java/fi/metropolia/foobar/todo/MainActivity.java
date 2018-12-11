@@ -158,13 +158,15 @@ public class MainActivity extends TransitionActivity {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                closeKeyboard();
+
                 if (input.getText().toString().equals("")){
+                    closeKeyboard();
                     //implement validation error dialog
                     displayErrorDialog("Cannot Create List", "List Must have a name");
 
                 }else{
                     if(SelectionList.getInstance().listExists(input.getText().toString())){
+                        closeKeyboard();
                         displayErrorDialog("Cannot Create List", "List already exists");
                     }else{
                         SelectionList.getInstance().addToDoList(input.getText().toString());
