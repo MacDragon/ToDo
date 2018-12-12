@@ -7,6 +7,8 @@ import android.view.MenuItem;
 
 /**
  * Defines a new alternative Activity class with predefined transition animations, that each activity can extend instead.
+ * This was largely based on code from https://stackoverflow.com/questions/39711666/activity-navigation-custom-animation-with-popenter-and-popexit-like-fragments/41025993#41025993
+ * with additions and alteractions to suit desired result and addition of action bar back catching.
  */
 public abstract class TransitionActivity extends AppCompatActivity {
 

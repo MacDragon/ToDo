@@ -18,7 +18,8 @@ import fi.metropolia.foobar.todo.*;
 /**
  * Activity to show a todolist called from main selector activity
  * extends Transition activity instead of AppcompatActivity to automatically get transition animations defined there
- * See package-info.java for further credit in implementation
+ * See package-info.java for further credit in implementation of ReyclerView
+ * https://developer.android.com/guide/topics/ui/dialogs#CustomLayout how to implement a dialog in android
  */
 public class ToDoListActivity extends TransitionActivity implements DragListener {
 

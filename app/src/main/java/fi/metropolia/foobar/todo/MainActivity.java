@@ -222,6 +222,9 @@ public class MainActivity extends TransitionActivity {
 
     }
 
+    /**
+     *
+     */
     @Override
     protected void onLeaveActivityAnimation() {
         // override to prevent animation on closing main activity.
