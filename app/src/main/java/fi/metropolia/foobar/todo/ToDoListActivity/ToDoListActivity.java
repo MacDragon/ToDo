@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -180,6 +181,9 @@ public class ToDoListActivity extends TransitionActivity implements DragListener
 
         // get handle to the RecyclerView in order to setup it's touch events, adapter etc.
         listView = (RecyclerView)findViewById(R.id.toDoListView);
+
+        // add default android divider decovations to better differentiate rows.
+        listView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         // attach the default android item animations to the RecyclerView to react to drag/swipe events.
         listView.setItemAnimator(new DefaultItemAnimator());
